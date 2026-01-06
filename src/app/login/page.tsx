@@ -2,11 +2,12 @@
 import { login, signup } from './actions'
 import styles from './login.module.css'
 
-export default function LoginPage({
+export default async function LoginPage({
     searchParams,
 }: {
-    searchParams: { message: string }
+    searchParams: Promise<{ message: string }>
 }) {
+    const { message } = await searchParams
     return (
         <div className={styles.container}>
             <div className={styles.card}>
@@ -29,8 +30,8 @@ export default function LoginPage({
                         <input id="password" name="password" type="password" required placeholder="••••••••" />
                     </div>
 
-                    {searchParams.message && (
-                        <div className={styles.message}>{searchParams.message}</div>
+                    {message && (
+                        <div className={styles.message}>{message}</div>
                     )}
 
                     <div className={styles.actions}>
