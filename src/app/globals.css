@@ -10,7 +10,11 @@
   --font-inter: "Inter", sans-serif;
   --input-bg: #ffffff;
   --input-border: #e1e1e1;
+  --input-bg: #ffffff;
+  --input-border: #e1e1e1;
   --input-text: #2d3436;
+  --page-header-color: #2d3436;
+  --page-subtitle-color: #636e72;
 }
 
 [data-theme='dark'] {
