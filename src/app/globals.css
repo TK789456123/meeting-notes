@@ -25,6 +25,7 @@
   --input-bg: rgba(0, 0, 0, 0.3);
   --input-border: rgba(255, 255, 255, 0.1);
   --input-text: #dfe6e9;
+  color-scheme: dark;
 }
 
 body {
