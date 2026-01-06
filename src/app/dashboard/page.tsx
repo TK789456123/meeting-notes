@@ -4,6 +4,8 @@ import styles from './dashboard.module.css'
 import Link from 'next/link'
 import { Plus } from 'lucide-react'
 
+import DeleteMeetingButton from '@/components/meetings/DeleteMeetingButton'
+
 export default async function DashboardPage() {
     const supabase = await createClient()
     const { data: { user } } = await supabase.auth.getUser()
@@ -33,17 +35,20 @@ export default async function DashboardPage() {
 
             <div className={styles.grid}>
                 {meetings?.map((meeting) => (
-                    <Link href={`/meetings/${meeting.id}`} key={meeting.id} className={styles.card}>
-                        <div className={styles.cardHeader}>
-                            <span className={styles.date}>
-                                {new Date(meeting.date).toLocaleDateString('cs-CZ')}
-                            </span>
-                        </div>
-                        <h3 className={styles.cardTitle}>{meeting.title}</h3>
-                        <div className={styles.cardFooter}>
-                            Zobrazit detail →
-                        </div>
-                    </Link>
+                    <div key={meeting.id} style={{ position: 'relative' }}>
+                        <DeleteMeetingButton id={meeting.id} />
+                        <Link href={`/meetings/${meeting.id}`} className={styles.card}>
+                            <div className={styles.cardHeader}>
+                                <span className={styles.date}>
+                                    {new Date(meeting.date).toLocaleDateString('cs-CZ')}
+                                </span>
+                            </div>
+                            <h3 className={styles.cardTitle}>{meeting.title}</h3>
+                            <div className={styles.cardFooter}>
+                                Zobrazit detail →
+                            </div>
+                        </Link>
+                    </div>
                 ))}
                 {(!meetings || meetings.length === 0) && (
                     <div className={styles.emptyState}>
