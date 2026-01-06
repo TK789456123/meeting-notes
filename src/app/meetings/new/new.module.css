@@ -40,7 +40,6 @@
 .inputGroup label {
     font-size: 0.9rem;
     font-weight: 600;
-    font-weight: 600;
     color: var(--text-primary);
 }
 
@@ -48,13 +47,18 @@
 .inputGroup textarea {
     padding: 0.8rem 1rem;
     border-radius: 12px;
-    border-radius: 12px;
     border: 2px solid var(--input-border);
     background: var(--input-bg);
     color: var(--input-text);
     font-size: 1rem;
     transition: all 0.2s ease;
     font-family: inherit;
+}
+
+.inputGroup input::placeholder,
+.inputGroup textarea::placeholder {
+    color: var(--text-secondary);
+    opacity: 0.8;
 }
 
 .inputGroup input:focus,
