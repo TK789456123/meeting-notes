@@ -52,5 +52,5 @@ export async function createMeeting(formData: FormData) {
     })
 
     revalidatePath('/dashboard')
-    redirect(`/meetings/${data.id}`)
+    redirect('/dashboard')
 }
