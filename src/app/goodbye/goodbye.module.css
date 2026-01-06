@@ -27,6 +27,8 @@
     font-size: 3rem;
     font-weight: 800;
     margin-bottom: 2rem;
+    color: white;
+    /* Fallback */
     background: linear-gradient(to right, #667eea, #764ba2);
     -webkit-background-clip: text;
     background-clip: text;

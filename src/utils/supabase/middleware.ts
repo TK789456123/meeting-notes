@@ -40,6 +40,10 @@ export async function updateSession(request: NextRequest) {
         data: { user },
     } = await supabase.auth.getUser()
 
+    if (request.nextUrl.pathname.startsWith('/goodbye')) {
+        return supabaseResponse
+    }
+
     if (
         !user &&
         !request.nextUrl.pathname.startsWith('/login') &&
