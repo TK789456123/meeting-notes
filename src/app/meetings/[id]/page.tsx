@@ -106,8 +106,8 @@ export default async function MeetingPage(props: { params: Promise<{ id: string 
                                 {(!participants || participants.length === 0) && <p style={{ color: 'var(--text-secondary)', fontStyle: 'italic' }}>Zatím žádní účastníci</p>}
                                 {participants?.map((p: any) => (
                                     <div key={p.user_id} className={styles.person}>
-                                        <img src={p.profiles.avatar_url || `https://ui-avatars.com/api/?name=${p.profiles.full_name}`} alt="" className={styles.avatar} />
-                                        <span>{p.profiles.full_name}</span>
+                                        <img src={p.profiles?.avatar_url || `https://ui-avatars.com/api/?name=${p.profiles?.full_name || 'Neznámý'}`} alt="" className={styles.avatar} />
+                                        <span>{p.profiles?.full_name || 'Neznámý uživatel'}</span>
                                     </div>
                                 ))}
                             </div>
