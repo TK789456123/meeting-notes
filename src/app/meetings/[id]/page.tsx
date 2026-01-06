@@ -8,7 +8,26 @@ import { CheckCircle2, Circle, Calendar, User, Clock, ArrowLeft } from 'lucide-r
 
 export default async function MeetingPage({ params }: { params: { id: string } }) {
     const supabase = await createClient()
-    // ... (lines 9-32 omitted for brevity, ensure imports match) 
+    const meetingId = params.id
+
+    const { data: meeting } = await supabase
+        .from('meetings')
+        .select('*, profiles:organizer_id(full_name)')
+        .eq('id', meetingId)
+        .single()
+
+    const { data: participants } = await supabase
+        .from('participants')
+        .select('user_id, profiles(id, full_name, avatar_url)')
+        .eq('meeting_id', meetingId)
+
+    const { data: actionItems } = await supabase
+        .from('action_items')
+        .select('*, profiles:assignee_id(full_name)')
+        .eq('meeting_id', meetingId)
+        .order('created_at', { ascending: true })
+
+    if (!meeting) return <div>Meeting not found</div>
 
     return (
         <>
