@@ -22,8 +22,8 @@
   --card-bg: rgba(0, 0, 0, 0.4);
   --card-border: rgba(255, 255, 255, 0.1);
   --primary-gradient: linear-gradient(135deg, #a29bfe 0%, #6c5ce7 100%);
-  --input-bg: rgba(0, 0, 0, 0.3);
-  --input-border: rgba(255, 255, 255, 0.1);
+  --input-bg: rgba(0, 0, 0, 0.6);
+  --input-border: rgba(255, 255, 255, 0.2);
   --input-text: #dfe6e9;
   color-scheme: dark;
 }
