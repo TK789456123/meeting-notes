@@ -8,6 +8,9 @@
   --card-border: rgba(255, 255, 255, 0.8);
   --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   --font-inter: "Inter", sans-serif;
+  --input-bg: #ffffff;
+  --input-border: #e1e1e1;
+  --input-text: #2d3436;
 }
 
 [data-theme='dark'] {
@@ -19,6 +22,9 @@
   --card-bg: rgba(0, 0, 0, 0.4);
   --card-border: rgba(255, 255, 255, 0.1);
   --primary-gradient: linear-gradient(135deg, #a29bfe 0%, #6c5ce7 100%);
+  --input-bg: rgba(0, 0, 0, 0.3);
+  --input-border: rgba(255, 255, 255, 0.1);
+  --input-text: #dfe6e9;
 }
 
 body {

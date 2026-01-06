@@ -52,17 +52,18 @@
     font-size: 1.25rem;
     font-weight: 700;
     margin-bottom: 1rem;
-    color: #2d3436;
+    margin-bottom: 1rem;
+    color: var(--text-primary);
     display: flex;
     align-items: center;
     gap: 0.5rem;
 }
 
 .contentBox {
-    background: rgba(255, 255, 255, 0.5);
+    background: var(--card-bg);
     padding: 1.5rem;
     border-radius: 16px;
-    border: 1px solid white;
+    border: 1px solid var(--card-border);
     min-height: 100px;
     white-space: pre-wrap;
 }
@@ -78,8 +79,10 @@
     min-height: 400px;
     padding: 1.5rem;
     border-radius: 16px;
-    border: 1px solid rgba(0, 0, 0, 0.1);
-    background: white;
+    border-radius: 16px;
+    border: 1px solid var(--input-border);
+    background: var(--input-bg);
+    color: var(--input-text);
     font-family: inherit;
     font-size: 1rem;
     line-height: 1.6;
@@ -103,7 +106,7 @@
 }
 
 .peopleList {
-    background: white;
+    background: var(--card-bg);
     padding: 1.5rem;
     border-radius: 16px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.02);
@@ -135,7 +138,7 @@
 }
 
 .actionItem {
-    background: white;
+    background: var(--card-bg);
     padding: 1rem;
     border-radius: 12px;
     display: flex;
@@ -174,10 +177,11 @@
 }
 
 .addActionForm {
-    background: rgba(255, 255, 255, 0.4);
+    background: var(--card-bg);
     padding: 1rem;
     border-radius: 12px;
-    border: 1px dashed #b2bec3;
+    border-radius: 12px;
+    border: 1px dashed var(--text-secondary);
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
@@ -187,13 +191,17 @@
 .addActionForm select {
     padding: 0.6rem;
     border-radius: 8px;
-    border: 1px solid #dfe6e9;
+    border-radius: 8px;
+    border: 1px solid var(--input-border);
+    background: var(--input-bg);
+    color: var(--input-text);
     font-size: 0.9rem;
 }
 
 .addActionForm button {
-    background: white;
-    border: 1px solid #dfe6e9;
+    background: var(--input-bg);
+    color: var(--input-text);
+    border: 1px solid var(--input-border);
     padding: 0.5rem;
     border-radius: 8px;
     cursor: pointer;
