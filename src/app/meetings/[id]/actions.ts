@@ -19,12 +19,40 @@ export async function updateNotes(meetingId: string, formData: FormData) {
 }
 
 export async function addActionItem(meetingId: string, formData: FormData) {
-    const supabase = await createClient()
+    const supabase = await createClient() // Logged in user client
+    const { data: { user } } = await supabase.auth.getUser()
+
+    if (!user) redirect('/login')
+
+    // 1. Verify Permission (Organizer OR Participant)
+    // Fetch meeting organizer and check if user is participant
+    const { data: meeting } = await supabase
+        .from('meetings')
+        .select('organizer_id')
+        .eq('id', meetingId)
+        .single()
+
+    const { data: participation } = await supabase
+        .from('participants')
+        .select('user_id')
+        .eq('meeting_id', meetingId)
+        .eq('user_id', user.id)
+        .single()
+
+    const isOrganizer = meeting?.organizer_id === user.id
+    const isParticipant = !!participation
+
+    if (!isOrganizer && !isParticipant) {
+        redirect(`/meetings/${meetingId}?error=${encodeURIComponent('Nemáte oprávnění přidávat úkoly.')}`)
+    }
+
+    // 2. Insert Action Item (Admin Client)
+    const adminSupabase = createAdminClient()
     const description = formData.get('description') as string
     const assigneeId = formData.get('assignee_id') as string
     const deadline = formData.get('deadline') as string
 
-    const { error } = await supabase
+    const { error } = await adminSupabase
         .from('action_items')
         .insert({
             meeting_id: meetingId,
