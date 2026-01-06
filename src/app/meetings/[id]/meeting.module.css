@@ -32,6 +32,12 @@
     color: var(--page-header-color);
 }
 
+/* Fallback/Force for Dark Mode */
+:global([data-theme='dark']) .title {
+    color: #ffffff !important;
+    text-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+}
+
 .meta {
     display: flex;
     gap: 2rem;
@@ -72,6 +78,10 @@
     display: flex;
     align-items: center;
     gap: 0.5rem;
+}
+
+:global([data-theme='dark']) .sectionTitle {
+    color: #ffffff !important;
 }
 
 .contentBox {
