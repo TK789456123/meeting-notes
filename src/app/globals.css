@@ -29,6 +29,8 @@
   --input-bg: #ffffff;
   --input-border: #b2bec3;
   --input-text: #2d3436;
+  --page-header-color: #ffffff;
+  --page-subtitle-color: rgba(255, 255, 255, 0.85);
   color-scheme: light;
   /* Force light controls inside the light card */
 }
