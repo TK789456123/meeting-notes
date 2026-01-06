@@ -6,7 +6,8 @@ import { updateNotes, addActionItem, toggleActionItem, addParticipant } from './
 import Link from 'next/link'
 import { CheckCircle2, Circle, Calendar, User, Clock, ArrowLeft } from 'lucide-react'
 
-export default async function MeetingPage({ params }: { params: { id: string } }) {
+export default async function MeetingPage(props: { params: Promise<{ id: string }> }) {
+    const params = await props.params
     const supabase = await createClient()
     const meetingId = params.id
 
