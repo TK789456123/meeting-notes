@@ -2,7 +2,7 @@
 'use server'
 
 import { createClient } from '@/utils/supabase/server'
-import { createAdminClient } from '@/utils/supabase/admin'
+
 import { revalidatePath } from 'next/cache'
 import { redirect } from 'next/navigation'
 
