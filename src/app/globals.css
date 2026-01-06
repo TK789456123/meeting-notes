@@ -19,7 +19,7 @@
   --background-end: #000000;
   --text-primary: #dfe6e9;
   --text-secondary: #b2bec3;
-  --card-bg: rgba(0, 0, 0, 0.4);
+  --card-bg: rgba(0, 0, 0, 0.85);
   --card-border: rgba(255, 255, 255, 0.1);
   --primary-gradient: linear-gradient(135deg, #a29bfe 0%, #6c5ce7 100%);
   --input-bg: rgba(0, 0, 0, 0.6);
