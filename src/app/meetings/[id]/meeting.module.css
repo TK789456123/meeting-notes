@@ -4,6 +4,21 @@
     margin: 0 auto;
 }
 
+.backButton {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--text-secondary);
+    text-decoration: none;
+    margin-bottom: 2rem;
+    font-weight: 500;
+    transition: color 0.2s;
+}
+
+.backButton:hover {
+    color: var(--primary-gradient);
+}
+
 .header {
     margin-bottom: 3rem;
     padding-bottom: 2rem;
@@ -52,7 +67,6 @@
     font-size: 1.25rem;
     font-weight: 700;
     margin-bottom: 1rem;
-    margin-bottom: 1rem;
     color: var(--text-primary);
     display: flex;
     align-items: center;
@@ -66,6 +80,9 @@
     border: 1px solid var(--card-border);
     min-height: 100px;
     white-space: pre-wrap;
+    color: var(--text-secondary);
+    /* Ensure visibility */
+    font-weight: 500;
 }
 
 .notesForm {
