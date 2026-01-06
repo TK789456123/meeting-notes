@@ -138,7 +138,18 @@
     padding: 1.5rem;
     border-radius: 16px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.02);
+    color: var(--input-text);
+    /* Ensure contrast */
 }
+
+/* Force dark text inside white cards even in dark mode for lists */
+:global([data-theme='dark']) .peopleList,
+:global([data-theme='dark']) .actionList {
+    color: #2d3436;
+}
+
+/* But wait, input-text is determined by theme. */
+/* Let's trust variables but force specificity if needed. */
 
 .person {
     display: flex;
@@ -146,6 +157,7 @@
     gap: 1rem;
     padding: 0.5rem 0;
     border-bottom: 1px solid #f1f2f6;
+    color: var(--input-text);
 }
 
 .person:last-child {
@@ -173,6 +185,7 @@
     gap: 1rem;
     align-items: flex-start;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.02);
+    color: var(--input-text);
 }
 
 .iconButton {
@@ -190,6 +203,13 @@
 .actionContent p {
     font-size: 0.95rem;
     margin-bottom: 0.3rem;
+    color: var(--text-primary);
+}
+
+/* Force text visibility in dark mode override */
+:global([data-theme='dark']) .actionContent p {
+    color: #2d3436;
+    /* Inside white card = dark text */
 }
 
 .completedText {
@@ -226,6 +246,12 @@
     font-size: 0.9rem;
 }
 
+:global([data-theme='dark']) .addActionForm input,
+:global([data-theme='dark']) .addActionForm select {
+    color: #2d3436;
+    /* Force dark text in inputs */
+}
+
 .addActionForm button {
     background: var(--input-bg);
     color: var(--input-text);
@@ -235,4 +261,8 @@
     cursor: pointer;
     font-weight: 600;
     margin-top: 0.5rem;
+}
+
+:global([data-theme='dark']) .addActionForm button {
+    color: #2d3436;
 }

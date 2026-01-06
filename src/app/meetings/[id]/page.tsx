@@ -6,10 +6,12 @@ import { updateNotes, addActionItem, toggleActionItem, addParticipant } from './
 import Link from 'next/link'
 import { CheckCircle2, Circle, Calendar, User, Clock, ArrowLeft } from 'lucide-react'
 
-export default async function MeetingPage(props: { params: Promise<{ id: string }> }) {
+export default async function MeetingPage(props: { params: Promise<{ id: string }>, searchParams: Promise<{ error?: string }> }) {
     const params = await props.params
+    const searchParams = await props.searchParams
     const supabase = await createClient()
     const meetingId = params.id
+    const errorMessage = searchParams.error
 
     const { data: meeting } = await supabase
         .from('meetings')
@@ -17,6 +19,7 @@ export default async function MeetingPage(props: { params: Promise<{ id: string 
         .eq('id', meetingId)
         .single()
 
+    // ... fetching logic for participants/actionItems (restored previously)
     const { data: participants } = await supabase
         .from('participants')
         .select('user_id, profiles(id, full_name, avatar_url)')
@@ -38,6 +41,23 @@ export default async function MeetingPage(props: { params: Promise<{ id: string 
                     <ArrowLeft size={20} />
                     Zpět na přehled
                 </Link>
+
+                {errorMessage && (
+                    <div style={{
+                        background: '#fee2e2',
+                        color: '#991b1b',
+                        padding: '1rem',
+                        borderRadius: '12px',
+                        marginBottom: '2rem',
+                        fontWeight: '600',
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '0.5rem'
+                    }}>
+                        ⚠️ {errorMessage}
+                    </div>
+                )}
+
                 <header className={styles.header}>
                     <h1 className={styles.title}>{meeting.title}</h1>
                     <div className={styles.meta}>
@@ -83,6 +103,7 @@ export default async function MeetingPage(props: { params: Promise<{ id: string 
                         <section className={styles.section}>
                             <h2 className={styles.sectionTitle}>Účastníci</h2>
                             <div className={styles.peopleList}>
+                                {(!participants || participants.length === 0) && <p style={{ color: 'var(--text-secondary)', fontStyle: 'italic' }}>Zatím žádní účastníci</p>}
                                 {participants?.map((p: any) => (
                                     <div key={p.user_id} className={styles.person}>
                                         <img src={p.profiles.avatar_url || `https://ui-avatars.com/api/?name=${p.profiles.full_name}`} alt="" className={styles.avatar} />
@@ -92,7 +113,8 @@ export default async function MeetingPage(props: { params: Promise<{ id: string 
                             </div>
 
                             <form action={addParticipant.bind(null, meetingId)} className={styles.addActionForm} style={{ marginTop: '1rem' }}>
-                                <input type="email" name="email" placeholder="Email účastníka..." required />
+                                <label style={{ fontSize: '0.9rem', color: 'var(--text-secondary)' }}>Přidat účastníka (email):</label>
+                                <input type="email" name="email" placeholder="client@example.com" required />
                                 <button type="submit">Přidat účastníka</button>
                             </form>
                         </section>
@@ -119,17 +141,24 @@ export default async function MeetingPage(props: { params: Promise<{ id: string 
                             </div>
 
                             <form action={addActionItem.bind(null, meetingId)} className={styles.addActionForm}>
-                                <input type="text" name="description" placeholder="Nový úkol..." required />
+                                <label style={{ fontSize: '0.9rem', color: 'var(--text-secondary)' }}>Nový úkol:</label>
+                                <input type="text" name="description" placeholder="Popis úkolu..." required />
                                 <div className={styles.row}>
-                                    <select name="assignee_id">
-                                        <option value="">Přiřadit komu...</option>
-                                        {participants?.map((p: any) => (
-                                            <option key={p.user_id} value={p.user_id}>{p.profiles.full_name}</option>
-                                        ))}
-                                    </select>
-                                    <input type="date" name="deadline" />
+                                    <div style={{ display: 'flex', flexDirection: 'column', flex: 1 }}>
+                                        <label style={{ fontSize: '0.8rem', color: 'var(--text-secondary)' }}>Komu:</label>
+                                        <select name="assignee_id">
+                                            <option value="">-- Vyberte --</option>
+                                            {participants?.map((p: any) => (
+                                                <option key={p.user_id} value={p.user_id}>{p.profiles.full_name}</option>
+                                            ))}
+                                        </select>
+                                    </div>
+                                    <div style={{ display: 'flex', flexDirection: 'column' }}>
+                                        <label style={{ fontSize: '0.8rem', color: 'var(--text-secondary)' }}>Do kdy:</label>
+                                        <input type="date" name="deadline" />
+                                    </div>
                                 </div>
-                                <button type="submit">Přidat</button>
+                                <button type="submit">Přidat úkol</button>
                             </form>
                         </section>
                     </div>
