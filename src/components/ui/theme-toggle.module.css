@@ -1,0 +1,18 @@
+.toggle {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    color: var(--text-primary);
+    padding: 0.5rem;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+}
+
+.toggle:hover {
+    transform: scale(1.1);
+    background: var(--text-primary);
+    color: var(--card-bg);
+}

@@ -1,30 +1,40 @@
 :root {
-  --background-gradient: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-  --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  --glass-bg: rgba(255, 255, 255, 0.7);
-  --glass-border: rgba(255, 255, 255, 0.2);
+  /* Light Mode Defaults */
+  --background-start: #f5f7fa;
+  --background-end: #c3cfe2;
   --text-primary: #2d3436;
   --text-secondary: #636e72;
+  --card-bg: rgba(255, 255, 255, 0.8);
+  --card-border: rgba(255, 255, 255, 0.8);
+  --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  --font-inter: "Inter", sans-serif;
+}
+
+[data-theme='dark'] {
+  /* Dark Mode Overrides */
+  --background-start: #2d3436;
+  --background-end: #000000;
+  --text-primary: #dfe6e9;
+  --text-secondary: #b2bec3;
+  --card-bg: rgba(0, 0, 0, 0.4);
+  --card-border: rgba(255, 255, 255, 0.1);
+  --primary-gradient: linear-gradient(135deg, #a29bfe 0%, #6c5ce7 100%);
+}
+
+body {
+  color: var(--text-primary);
+  background: linear-gradient(135deg, var(--background-start) 0%, var(--background-end) 100%);
+  min-height: 100vh;
+  margin: 0;
+  font-family: var(--font-inter);
+  transition: color 0.3s ease, background 0.3s ease;
 }
 
 * {
   box-sizing: border-box;
-  padding: 0;
-  margin: 0;
-}
-
-body {
-  font-family: var(--font-inter), sans-serif;
-  color: var(--text-primary);
-  background: var(--background-gradient);
-  min-height: 100vh;
 }
 
 a {
   color: inherit;
   text-decoration: none;
-}
-
-button {
-  font-family: inherit;
 }

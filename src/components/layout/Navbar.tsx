@@ -3,6 +3,7 @@ import { createClient } from '@/utils/supabase/server'
 import { redirect } from 'next/navigation'
 import Link from 'next/link'
 import styles from './Navbar.module.css'
+import { ThemeToggle } from '../ui/theme-toggle'
 
 export default async function Navbar() {
     const supabase = await createClient()
@@ -24,6 +25,7 @@ export default async function Navbar() {
                 <Link href="/">MeetingNotes</Link>
             </div>
             <div className={styles.userMenu}>
+                <ThemeToggle />
                 {user ? (
                     <>
                         <span className={styles.email}>{user.email}</span>
