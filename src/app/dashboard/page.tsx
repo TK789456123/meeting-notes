@@ -46,15 +46,13 @@ export default async function DashboardPage(props: {
     const { data: meetings } = await queryBuilder
 
     return (
-        <div className={styles.container}>
-            {/* {showTutorial && user && <OnboardingTutorial userId={user.id} />} */}
-
             <header className={styles.header}>
                 <div>
                     <h1 className={styles.title}>Moje schůzky</h1>
                     <p className={styles.subtitle}>Přehled všech vašich naplánovaných meetingů</p>
                 </div>
                 <div className={styles.headerButtons}>
+                    {user && <OnboardingTutorial userId={user.id} />}
                     <Link href="/import" className={styles.secondaryButton}>
                         Importovat (TXT)
                     </Link>
@@ -105,6 +103,6 @@ export default async function DashboardPage(props: {
                     </div>
                 )}
             </div>
-        </div>
+        </div >
     )
 }

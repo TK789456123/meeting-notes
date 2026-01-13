@@ -4,12 +4,12 @@
     left: 0;
     width: 100vw;
     height: 100vh;
-    background: rgba(0, 0, 0, 0.7);
+    background: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(5px);
     z-index: 1000;
     display: flex;
     justify-content: center;
     align-items: center;
-    backdrop-filter: blur(5px);
     animation: fadeIn 0.3s ease;
 }
 
@@ -17,88 +17,38 @@
     background: white;
     padding: 2.5rem;
     border-radius: 24px;
-    max-width: 500px;
     width: 90%;
+    max-width: 500px;
     text-align: center;
-    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
-    position: relative;
-    overflow: hidden;
-    animation: slideUp 0.4s ease;
-}
-
-[data-theme='dark'] .modal {
-    background: #1e293b;
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+    animation: slideUp 0.3s ease;
 }
 
 .stepImage {
-    font-size: 3rem;
-    margin-bottom: 1.5rem;
+    font-size: 4rem;
     display: block;
+    margin-bottom: 1.5rem;
+    animation: bounce 2s infinite;
 }
 
 .title {
     font-size: 1.8rem;
     font-weight: 800;
-    margin-bottom: 1rem;
-    color: var(--text-primary);
-    background: var(--primary-gradient);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
+    color: #1a202c;
+    margin-bottom: 0.5rem;
 }
 
 .description {
-    color: var(--text-secondary);
     font-size: 1.1rem;
+    color: #4a5568;
     line-height: 1.6;
-    margin-bottom: 2.5rem;
-}
-
-.footer {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-top: auto;
-}
-
-.skipButton {
-    background: none;
-    border: none;
-    color: var(--text-secondary);
-    font-weight: 500;
-    cursor: pointer;
-    font-size: 0.95rem;
-    padding: 0.5rem 1rem;
-    transition: color 0.2s;
-}
-
-.skipButton:hover {
-    color: var(--text-primary);
-    text-decoration: underline;
-}
-
-.nextButton {
-    background: var(--primary-gradient);
-    color: white;
-    border: none;
-    padding: 0.8rem 2rem;
-    border-radius: 12px;
-    font-weight: 600;
-    font-size: 1rem;
-    cursor: pointer;
-    transition: transform 0.2s, box-shadow 0.2s;
-    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
-}
-
-.nextButton:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+    margin-bottom: 2rem;
 }
 
 .dots {
     display: flex;
-    gap: 0.5rem;
     justify-content: center;
+    gap: 0.5rem;
     margin-bottom: 2rem;
 }
 
@@ -106,14 +56,76 @@
     width: 8px;
     height: 8px;
     border-radius: 50%;
-    background: #ccc;
+    background: #e2e8f0;
     transition: all 0.3s ease;
 }
 
 .activeDot {
     background: #667eea;
-    width: 20px;
-    border-radius: 10px;
+    width: 24px;
+    border-radius: 4px;
+}
+
+.footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 1rem;
+}
+
+.skipButton {
+    color: #718096;
+    background: none;
+    border: none;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    transition: all 0.2s;
+}
+
+.skipButton:hover {
+    color: #4a5568;
+    background: #f7fafc;
+}
+
+.nextButton {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border: none;
+    padding: 0.8rem 2rem;
+    border-radius: 12px;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+    transition: all 0.2s;
+}
+
+.nextButton:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.5);
+}
+
+.triggerButton {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.8rem 1.5rem;
+    background: white;
+    color: #667eea;
+    border: 2px solid #667eea;
+    border-radius: 12px;
+    font-weight: 600;
+    transition: all 0.2s ease;
+    cursor: pointer;
+    height: fit-content;
+}
+
+.triggerButton:hover {
+    transform: translateY(-2px);
+    background: #f8f0ff;
 }
 
 @keyframes fadeIn {
@@ -128,12 +140,24 @@
 
 @keyframes slideUp {
     from {
-        transform: translateY(20px);
         opacity: 0;
+        transform: translateY(20px);
     }
 
     to {
-        transform: translateY(0);
         opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes bounce {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-10px);
     }
 }

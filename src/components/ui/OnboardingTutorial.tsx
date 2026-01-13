@@ -42,10 +42,6 @@ export default function OnboardingTutorial({ userId }: OnboardingTutorialProps) 
     const [mounted, setMounted] = useState(false)
 
     useEffect(() => {
-        const seen = localStorage.getItem('meeting_notes_tutorial_seen')
-        if (!seen) {
-            setIsVisible(true)
-        }
         setMounted(true)
     }, [])
 
@@ -59,43 +55,57 @@ export default function OnboardingTutorial({ userId }: OnboardingTutorialProps) 
 
     const finishTutorial = async () => {
         setIsVisible(false)
+        setCurrentStep(0) // Reset for next time
         localStorage.setItem('meeting_notes_tutorial_seen', 'true')
-        await completeTutorial(userId)
+        try {
+            await completeTutorial(userId)
+        } catch (e) {
+            // ignore
+        }
     }
 
-    if (!mounted || !isVisible) return null
-
-    const step = STEPS[currentStep]
+    if (!mounted) return null
 
     return (
-        <div className={styles.overlay}>
-            <div className={styles.modal}>
+        <>
+            <button
+                onClick={() => setIsVisible(true)}
+                className={styles.triggerButton}
+            >
+                Tutoriál
+            </button>
 
-                <span className={styles.stepImage} role="img" aria-label="icon">
-                    {step.icon}
-                </span>
+            {isVisible && (
+                <div className={styles.overlay}>
+                    <div className={styles.modal}>
 
-                <h2 className={styles.title}>{step.title}</h2>
-                <p className={styles.description}>{step.description}</p>
+                        <span className={styles.stepImage} role="img" aria-label="icon">
+                            {step.icon}
+                        </span>
 
-                <div className={styles.dots}>
-                    {STEPS.map((_, index) => (
-                        <div
-                            key={index}
-                            className={`${styles.dot} ${index === currentStep ? styles.activeDot : ''}`}
-                        />
-                    ))}
+                        <h2 className={styles.title}>{step.title}</h2>
+                        <p className={styles.description}>{step.description}</p>
+
+                        <div className={styles.dots}>
+                            {STEPS.map((_, index) => (
+                                <div
+                                    key={index}
+                                    className={`${styles.dot} ${index === currentStep ? styles.activeDot : ''}`}
+                                />
+                            ))}
+                        </div>
+
+                        <div className={styles.footer}>
+                            <button onClick={finishTutorial} className={styles.skipButton}>
+                                {currentStep === STEPS.length - 1 ? '' : 'Přeskočit'}
+                            </button>
+                            <button onClick={handleNext} className={styles.nextButton}>
+                                {currentStep === STEPS.length - 1 ? 'Začít!' : 'Pokračovat'}
+                            </button>
+                        </div>
+                    </div>
                 </div>
-
-                <div className={styles.footer}>
-                    <button onClick={finishTutorial} className={styles.skipButton}>
-                        {currentStep === STEPS.length - 1 ? '' : 'Přeskočit'}
-                    </button>
-                    <button onClick={handleNext} className={styles.nextButton}>
-                        {currentStep === STEPS.length - 1 ? 'Začít!' : 'Pokračovat'}
-                    </button>
-                </div>
-            </div>
-        </div>
+            )}
+        </>
     )
 }
