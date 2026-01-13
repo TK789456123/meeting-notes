@@ -2,7 +2,7 @@
 import { createClient } from '@/utils/supabase/server'
 import styles from './dashboard.module.css'
 import Link from 'next/link'
-import { Plus } from 'lucide-react'
+import { Plus, Settings } from 'lucide-react'
 
 import DeleteMeetingButton from '@/components/meetings/DeleteMeetingButton'
 import SearchInput from '@/components/ui/search-input'
@@ -54,6 +54,9 @@ export default async function DashboardPage(props: {
                 </div>
                 <div className={styles.headerButtons}>
                     {user && <OnboardingTutorial userId={user.id} />}
+                    <button className={styles.iconButton} aria-label="Nastavení">
+                        <Settings size={20} />
+                    </button>
                     <Link href="/import" className={styles.secondaryButton}>
                         Importovat (TXT)
                     </Link>

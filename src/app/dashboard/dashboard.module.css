@@ -127,3 +127,22 @@
     border-radius: 24px;
     border: 2px dashed rgba(0, 0, 0, 0.05);
 }
+
+.iconButton {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 45px;
+    height: 45px;
+    background: white;
+    color: #667eea;
+    border: 2px solid #667eea;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.iconButton:hover {
+    transform: translateY(-2px);
+    background: #f8f0ff;
+}
