@@ -27,8 +27,6 @@ export default function ExportButtons({ meeting }: ExportButtonsProps) {
     }
 
     const handleDownloadPDF = () => {
-        // ... existing PDF logic
-
         const doc = new jsPDF()
 
         // Font setup (standard helvetica supports basics, for unicode cs chars we might need custom font but trying standard first)
