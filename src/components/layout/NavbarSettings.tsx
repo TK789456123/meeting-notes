@@ -14,7 +14,7 @@ export default function NavbarSettings() {
                 className={styles.iconButton}
                 aria-label="Nastavení"
                 onClick={() => setIsSettingsOpen(true)}
-                style={{ marginRight: '1rem' }}
+                style={{ marginRight: '0.5rem' }}
             >
                 <Settings size={20} />
             </button>
