@@ -1,0 +1,268 @@
+.container {
+    padding: 2rem;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.backButton {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--page-subtitle-color);
+    text-decoration: none;
+    margin-bottom: 2rem;
+    font-weight: 500;
+    transition: color 0.2s;
+}
+
+.backButton:hover {
+    color: white;
+}
+
+.header {
+    margin-bottom: 3rem;
+    padding-bottom: 2rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.title {
+    font-size: 2.5rem;
+    font-weight: 800;
+    margin-bottom: 1rem;
+    color: var(--page-header-color);
+}
+
+/* Fallback/Force for Dark Mode */
+:global([data-theme='dark']) .title {
+    color: #ffffff !important;
+    text-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+}
+
+.meta {
+    display: flex;
+    gap: 2rem;
+    color: var(--page-subtitle-color);
+}
+
+
+.metaItem {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-weight: 500;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 3rem;
+}
+
+@media (max-width: 900px) {
+    .grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+.column {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.sectionTitle {
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    color: var(--page-header-color);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+:global([data-theme='dark']) .sectionTitle {
+    color: #ffffff !important;
+}
+
+.contentBox {
+    background: var(--card-bg);
+    padding: 1.5rem;
+    border-radius: 16px;
+    border: 1px solid var(--card-border);
+    min-height: 100px;
+    white-space: pre-wrap;
+    color: var(--text-secondary);
+    /* Ensure visibility */
+    font-weight: 500;
+}
+
+.notesForm {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.notesArea {
+    width: 100%;
+    min-height: 400px;
+    padding: 1.5rem;
+    border-radius: 16px;
+    border-radius: 16px;
+    border: 1px solid var(--input-border);
+    background: var(--input-bg);
+    color: var(--input-text);
+    font-family: inherit;
+    font-size: 1rem;
+    line-height: 1.6;
+    resize: vertical;
+}
+
+.notesArea:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.saveButton {
+    align-self: flex-start;
+    padding: 0.8rem 1.5rem;
+    background: #2d3436;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+.peopleList {
+    background: var(--card-bg);
+    padding: 1.5rem;
+    border-radius: 16px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.02);
+    color: var(--input-text);
+    /* Ensure contrast */
+}
+
+/* Force dark text inside white cards even in dark mode for lists */
+:global([data-theme='dark']) .peopleList,
+:global([data-theme='dark']) .actionList {
+    color: #2d3436;
+}
+
+/* But wait, input-text is determined by theme. */
+/* Let's trust variables but force specificity if needed. */
+
+.person {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.5rem 0;
+    border-bottom: 1px solid #f1f2f6;
+    color: var(--input-text);
+}
+
+.person:last-child {
+    border-bottom: none;
+}
+
+.avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+}
+
+.actionList {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+    margin-bottom: 1.5rem;
+}
+
+.actionItem {
+    background: var(--card-bg);
+    padding: 1rem;
+    border-radius: 12px;
+    display: flex;
+    gap: 1rem;
+    align-items: flex-start;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.02);
+    color: var(--input-text);
+}
+
+.iconButton {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 2px;
+    display: flex;
+}
+
+.actionContent {
+    flex: 1;
+}
+
+.actionContent p {
+    font-size: 0.95rem;
+    margin-bottom: 0.3rem;
+    color: var(--text-primary);
+}
+
+/* Force text visibility in dark mode override */
+:global([data-theme='dark']) .actionContent p {
+    color: #2d3436;
+    /* Inside white card = dark text */
+}
+
+.completedText {
+    text-decoration: line-through;
+    color: #b2bec3;
+}
+
+.actionMeta {
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    display: flex;
+    gap: 1rem;
+}
+
+.addActionForm {
+    background: var(--card-bg);
+    padding: 1rem;
+    border-radius: 12px;
+    border-radius: 12px;
+    border: 1px dashed var(--text-secondary);
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.addActionForm input,
+.addActionForm select {
+    padding: 0.6rem;
+    border-radius: 8px;
+    border-radius: 8px;
+    border: 1px solid var(--input-border);
+    background: var(--input-bg);
+    color: var(--input-text);
+    font-size: 0.9rem;
+}
+
+:global([data-theme='dark']) .addActionForm input,
+:global([data-theme='dark']) .addActionForm select {
+    color: #2d3436;
+    /* Force dark text in inputs */
+}
+
+.addActionForm button {
+    background: var(--input-bg);
+    color: var(--input-text);
+    border: 1px solid var(--input-border);
+    padding: 0.5rem;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    margin-top: 0.5rem;
+}
+
+:global([data-theme='dark']) .addActionForm button {
+    color: #2d3436;
+}

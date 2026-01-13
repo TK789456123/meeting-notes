@@ -1,0 +1,75 @@
+.container {
+    display: flex;
+    justify-content: center;
+    padding: 3rem 1rem;
+}
+
+.card {
+    background: var(--card-bg);
+    padding: 2.5rem;
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+    width: 100%;
+    max-width: 500px;
+    text-align: center;
+}
+
+.title {
+    font-size: 1.8rem;
+    font-weight: 800;
+    margin-bottom: 0.5rem;
+    color: var(--text-primary);
+}
+
+.subtitle {
+    color: #636e72;
+    margin-bottom: 1rem;
+}
+
+.instruction {
+    font-size: 0.9rem;
+    background: var(--card-bg);
+    padding: 0.8rem;
+    border-radius: 8px;
+    margin-bottom: 2rem;
+    color: var(--text-primary);
+    font-family: monospace;
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.inputGroup input {
+    width: 100%;
+    padding: 1rem;
+    border: 2px dashed var(--input-border);
+    background: var(--input-bg);
+    color: var(--input-text);
+    border-radius: 12px;
+    cursor: pointer;
+}
+
+.inputGroup input:hover {
+    border-color: #667eea;
+    background: #f8f0ff;
+}
+
+.buttonPrimary {
+    width: 100%;
+    padding: 1rem;
+    border: none;
+    border-radius: 12px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(118, 75, 162, 0.3);
+}
+
+.buttonPrimary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(118, 75, 162, 0.4);
+}

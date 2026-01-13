@@ -1,0 +1,54 @@
+:root {
+  /* Light Mode Defaults */
+  --background-start: #f5f7fa;
+  --background-end: #c3cfe2;
+  --text-primary: #2d3436;
+  --text-secondary: #636e72;
+  --card-bg: rgba(255, 255, 255, 0.8);
+  --card-border: rgba(255, 255, 255, 0.8);
+  --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  --font-inter: "Inter", sans-serif;
+  --input-bg: #ffffff;
+  --input-border: #e1e1e1;
+  --input-bg: #ffffff;
+  --input-border: #e1e1e1;
+  --input-text: #2d3436;
+  --page-header-color: #2d3436;
+  --page-subtitle-color: #636e72;
+}
+
+[data-theme='dark'] {
+  /* Dark Mode Overrides - High Contrast (Light Card on Dark BG) */
+  --background-start: #2d3436;
+  --background-end: #000000;
+  --text-primary: #2d3436;
+  --text-secondary: #636e72;
+  --card-bg: rgba(255, 255, 255, 0.9);
+  --card-border: rgba(255, 255, 255, 0.2);
+  --primary-gradient: linear-gradient(135deg, #a29bfe 0%, #6c5ce7 100%);
+  --input-bg: #ffffff;
+  --input-border: #b2bec3;
+  --input-text: #2d3436;
+  --page-header-color: #ffffff;
+  --page-subtitle-color: rgba(255, 255, 255, 0.85);
+  color-scheme: light;
+  /* Force light controls inside the light card */
+}
+
+body {
+  color: var(--text-primary);
+  background: linear-gradient(135deg, var(--background-start) 0%, var(--background-end) 100%);
+  min-height: 100vh;
+  margin: 0;
+  font-family: var(--font-inter);
+  transition: color 0.3s ease, background 0.3s ease;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
