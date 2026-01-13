@@ -5,6 +5,7 @@ import styles from './meeting.module.css'
 import { updateNotes, addActionItem, toggleActionItem, addParticipant } from './actions'
 import Link from 'next/link'
 import { CheckCircle2, Circle, Calendar, User, Clock, ArrowLeft } from 'lucide-react'
+import ExportButtons from '@/components/meetings/ExportButtons'
 
 export default async function MeetingPage(props: { params: Promise<{ id: string }>, searchParams: Promise<{ error?: string }> }) {
     const params = await props.params
@@ -59,7 +60,6 @@ export default async function MeetingPage(props: { params: Promise<{ id: string 
                 )}
 
 
-                import ExportButtons from '@/components/meetings/ExportButtons'
 
                 // ...
 
