@@ -58,7 +58,30 @@ export default async function MeetingPage(props: { params: Promise<{ id: string 
         .from('participants')
         .select('user_id, profiles(id, full_name, avatar_url, email)')
         .eq('meeting_id', meetingId)
-    if (pData) participants = pData
+
+    if (pData) {
+        // Enhance participants with data from Auth Admin if Profile data is missing
+        // This is a fallback to ensure we ALWAYS show at least an email
+        participants = await Promise.all(pData.map(async (p: any) => {
+            if (!p.profiles?.full_name && !p.profiles?.email) {
+                try {
+                    const { data: { user }, error } = await adminSupabase.auth.admin.getUserById(p.user_id)
+                    if (user && user.email) {
+                        return {
+                            ...p,
+                            profiles: {
+                                ...p.profiles,
+                                email: user.email
+                            }
+                        }
+                    }
+                } catch (err) {
+                    console.error("Error fetching auth user:", err)
+                }
+            }
+            return p
+        }))
+    }
 
     const { data: aiData } = await adminSupabase
         .from('action_items')
