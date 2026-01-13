@@ -172,6 +172,56 @@
     top: 0 !important;
 }
 
+/* Force Google Translate Menu to be a Vertical Scrollable List */
+:global(.goog-te-menu-frame) {
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2) !important;
+    border-radius: 12px !important;
+}
+
+:global(.goog-te-menu2) {
+    max-width: 300px !important;
+    max-height: 400px !important;
+    overflow-y: auto !important;
+    box-shadow: none !important;
+    border: none !important;
+    padding: 10px !important;
+    background: white !important;
+}
+
+[data-theme='dark'] :global(.goog-te-menu2) {
+    background: #1a202c !important;
+    border: 1px solid #2d3748 !important;
+}
+
+:global(.goog-te-menu2 table),
+:global(.goog-te-menu2 tbody),
+:global(.goog-te-menu2 tr),
+:global(.goog-te-menu2 td) {
+    display: block !important;
+    width: 100% !important;
+}
+
+:global(.goog-te-menu2-item) {
+    display: block !important;
+    width: 100% !important;
+    padding: 8px 12px !important;
+    font-size: 14px !important;
+    text-align: left !important;
+}
+
+:global(.goog-te-menu2-item:hover) {
+    background: rgba(0, 0, 0, 0.05) !important;
+}
+
+[data-theme='dark'] :global(.goog-te-menu2-item-selected) {
+    background: #2d3748 !important;
+}
+
+[data-theme='dark'] :global(.goog-te-menu2-item span.text) {
+    color: #e2e8f0 !important;
+}
+
+
 @keyframes fadeIn {
     from {
         opacity: 0;

@@ -25,37 +25,46 @@ export default function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
     useEffect(() => {
         setMounted(true)
 
-        // Initialize Google Translate if not already done
-        if (!window.googleTranslateElementInit) {
-            window.googleTranslateElementInit = () => {
-                new window.google.translate.TranslateElement(
-                    {
-                        layout: window.google.translate.TranslateElement.InlineLayout.SIMPLE,
-                        autoDisplay: false
-                    },
-                    'google_translate_element'
-                );
-            };
+        if (isOpen) {
+            const initGoogleTranslate = () => {
+                const element = document.getElementById('google_translate_element')
+                if (element && !element.children.length && window.google?.translate?.TranslateElement) {
+                    new window.google.translate.TranslateElement(
+                        {
+                            pageLanguage: 'cs',
+                            layout: window.google.translate.TranslateElement.InlineLayout.SIMPLE,
+                            autoDisplay: false
+                        },
+                        'google_translate_element'
+                    )
+                }
+            }
 
-            const script = document.createElement('script');
-            script.src = '//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit';
-            script.async = true;
-            document.body.appendChild(script);
-        } else if (window.google && window.google.translate) {
-            // Re-render if already loaded (might happen on navigation)
-            try {
-                new window.google.translate.TranslateElement(
-                    {
-                        layout: window.google.translate.TranslateElement.InlineLayout.SIMPLE,
-                        autoDisplay: false
-                    },
-                    'google_translate_element'
-                );
-            } catch (e) {
-                // ignore if already initialized
+            window.googleTranslateElementInit = initGoogleTranslate
+
+            const scriptId = 'google-translate-script'
+            if (!document.getElementById(scriptId)) {
+                const script = document.createElement('script')
+                script.id = scriptId
+                script.src = '//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit'
+                script.async = true
+                document.body.appendChild(script)
+            }
+
+            // Aggressive polling to ensure initialization happens
+            // This is necessary because the script connection can be flaky in SPAs
+            const intervalId = setInterval(initGoogleTranslate, 500)
+
+            // Allow up to 5 seconds for the widget to load
+            const timeoutId = setTimeout(() => clearInterval(intervalId), 5000)
+
+            return () => {
+                clearInterval(intervalId)
+                clearTimeout(timeoutId)
+                // We don't remove the script to avoid reloading it unnecessarily
             }
         }
-    }, [])
+    }, [isOpen])
 
     if (!mounted || !isOpen) return null
 
