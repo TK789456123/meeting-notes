@@ -5,32 +5,50 @@ import Link from 'next/link'
 import { Plus } from 'lucide-react'
 
 import DeleteMeetingButton from '@/components/meetings/DeleteMeetingButton'
-import SearchInput from '@/components/ui/search-input'
+import Search from '@/components/ui/Search'
+import OnboardingTutorial from '@/components/ui/OnboardingTutorial'
 
 export default async function DashboardPage(props: {
     searchParams?: Promise<{
-        query?: string
-    }>
+        query?: string;
+    }>;
 }) {
-    const searchParams = await props.searchParams
-    const query = searchParams?.query || ''
-
+    const searchParams = await props.searchParams;
+    const query = searchParams?.query || '';
     const supabase = await createClient()
-    const { data: { user } } = await supabase.auth.getUser()
 
-    let dbQuery = supabase
+    // Fetch User to check tutorial status
+    const { data: { user } } = await supabase.auth.getUser()
+    let showTutorial = false
+
+    if (user) {
+        const { data: profile } = await supabase
+            .from('profiles')
+            .select('has_seen_tutorial')
+            .eq('id', user.id)
+            .single()
+
+        // If profile doesn't exist (yet to be created by trigger) or has_seen_tutorial is false/null
+        if (!profile || !profile.has_seen_tutorial) {
+            showTutorial = true
+        }
+    }
+
+    let queryBuilder = supabase
         .from('meetings')
         .select('*')
         .order('date', { ascending: true })
 
     if (query) {
-        dbQuery = dbQuery.ilike('title', `%${query}%`)
+        queryBuilder = queryBuilder.ilike('title', `%${query}%`)
     }
 
-    const { data: meetings } = await dbQuery
+    const { data: meetings } = await queryBuilder
 
     return (
         <div className={styles.container}>
+            {showTutorial && user && <OnboardingTutorial userId={user.id} />}
+
             <header className={styles.header}>
                 <div>
                     <h1 className={styles.title}>Moje schůzky</h1>

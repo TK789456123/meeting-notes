@@ -67,6 +67,29 @@ test('Full User Flow: Register, Create, Search, Delete', async ({ page }) => {
     await expect(page.locator('body')).toContainText(meetingTitle); // Should reappear
     console.log('Search functionality verified');
 
+    // 5.5 TEST COLOR PICKER
+    console.log('Testing Color Picker...');
+    // Go to detail
+    await page.click(`text=${meetingTitle}`);
+    await page.waitForURL(/.*meetings\/.*/);
+
+    // Change color to bright yellow #ffff00
+    const testColor = '#ffff00';
+    await page.fill('input[type="color"]', testColor);
+    // Wait for server action to possibly complete (though fill is fast, maybe wait a tiny bit or just go back)
+    await page.waitForTimeout(1000);
+
+    // Go back
+    await page.click('text=Zpět na přehled');
+    await page.waitForURL(/.*dashboard.*/);
+
+    // Verify color on dashboard card
+    const card = page.locator(`a:has-text("${meetingTitle}")`);
+    await expect(card).toHaveCSS('border-color', 'rgb(255, 255, 0)');
+    console.log('Color change verified');
+
+
+
     // 6. Delete Meeting
     page.on('dialog', dialog => dialog.accept());
 

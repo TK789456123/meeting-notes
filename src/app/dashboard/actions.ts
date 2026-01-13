@@ -13,3 +13,9 @@ export async function deleteMeeting(meetingId: string) {
 
     revalidatePath('/dashboard')
 }
+
+export async function completeTutorial(userId: string) {
+    const supabase = await createClient()
+    await supabase.from('profiles').update({ has_seen_tutorial: true }).eq('id', userId)
+    revalidatePath('/dashboard')
+}
