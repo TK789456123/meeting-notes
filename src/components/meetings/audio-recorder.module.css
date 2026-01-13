@@ -1,0 +1,104 @@
+.container {
+    padding: 1rem;
+    background: #f8fafc;
+    border-radius: 12px;
+    border: 1px dashed #cbd5e0;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+    transition: all 0.3s ease;
+}
+
+.container.recording {
+    background: #fff5f5;
+    border-color: #fc8181;
+}
+
+.recordButton {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    background: #4299e1;
+    color: white;
+    border: none;
+    border-radius: 99px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.recordButton:hover {
+    background: #3182ce;
+}
+
+.stopButton {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    background: #e53e3e;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    animation: pulse 1.5s infinite;
+}
+
+.timer {
+    font-family: monospace;
+    font-size: 1.1rem;
+    color: #e53e3e;
+    font-weight: bold;
+}
+
+.reviewControls {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    width: 100%;
+}
+
+.audioPlayer {
+    flex: 1;
+    height: 36px;
+}
+
+.saveButton {
+    padding: 0.5rem 1rem;
+    background: #48bb78;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.discardButton {
+    padding: 0.5rem 1rem;
+    background: #cbd5e0;
+    color: #4a5568;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+        box-shadow: 0 0 0 0 rgba(229, 62, 62, 0.7);
+    }
+
+    70% {
+        transform: scale(1.1);
+        box-shadow: 0 0 0 10px rgba(229, 62, 62, 0);
+    }
+
+    100% {
+        transform: scale(1);
+        box-shadow: 0 0 0 0 rgba(229, 62, 62, 0);
+    }
+}

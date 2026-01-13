@@ -6,6 +6,8 @@ import { updateNotes, addActionItem, toggleActionItem, addParticipant } from './
 import Link from 'next/link'
 import { CheckCircle2, Circle, Calendar, User, Clock, ArrowLeft } from 'lucide-react'
 import ExportButtons from '@/components/meetings/ExportButtons'
+import ShareMeetingButton from '@/components/meetings/ShareMeetingButton'
+import AudioRecorder from '@/components/meetings/AudioRecorder'
 
 export default async function MeetingPage(props: { params: Promise<{ id: string }>, searchParams: Promise<{ error?: string }> }) {
     const params = await props.params
@@ -96,13 +98,26 @@ export default async function MeetingPage(props: { params: Promise<{ id: string 
                                 {meeting.profiles?.full_name}
                             </div>
                         </div>
-                        <ExportButtons meeting={meeting} />
+                        <div style={{ display: 'flex', gap: '0.5rem' }}>
+                            <ShareMeetingButton meetingId={meeting.id} />
+                            <ExportButtons meeting={meeting} />
+                        </div>
                     </div>
                 </header>
 
 
                 <div className={styles.grid}>
                     <div className={styles.column}>
+                        <section className={styles.section}>
+                            <h2 className={styles.sectionTitle}>Audio Záznam</h2>
+                            {meeting.audio_url && (
+                                <div style={{ marginBottom: '1rem' }}>
+                                    <audio src={meeting.audio_url} controls style={{ width: '100%' }} />
+                                </div>
+                            )}
+                            <AudioRecorder meetingId={meeting.id} />
+                        </section>
+
                         <section className={styles.section}>
                             <h2 className={styles.sectionTitle}>Agenda</h2>
                             <div className={styles.contentBox}>

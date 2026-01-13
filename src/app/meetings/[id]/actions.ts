@@ -86,3 +86,79 @@ export async function updateColor(meetingId: string, color: string) {
     revalidatePath(`/meetings/${meetingId}`)
     revalidatePath('/dashboard')
 }
+
+export async function generateShareToken(meetingId: string) {
+    const supabase = await createClient()
+
+    // Check if token exists
+    const { data: meeting } = await supabase
+        .from('meetings')
+        .select('share_token')
+        .eq('id', meetingId)
+        .single()
+
+    if (meeting?.share_token) {
+        return meeting.share_token
+    }
+
+    // Generate new token
+    const token = crypto.randomUUID()
+
+    const { error } = await supabase
+        .from('meetings')
+        .update({ share_token: token })
+        .eq('id', meetingId)
+
+    if (error) {
+        console.error('Error generating share token:', error)
+        throw new Error('Failed to generate share link')
+    }
+
+    revalidatePath(`/meetings/${meetingId}`)
+    return token
+}
+
+export async function saveAudio(meetingId: string, formData: FormData) {
+    const supabase = await createClient()
+    const file = formData.get('audio') as File
+
+    if (!file) {
+        throw new Error('No audio file provided')
+    }
+
+    // specific filename structure
+    const filename = `${meetingId}/${Date.now()}.webm`
+
+    const { error: uploadError } = await supabase
+        .storage
+        .from('meeting-audio')
+        .upload(filename, file, {
+            contentType: 'audio/webm; codecs=opus',
+            upsert: true
+        })
+
+    if (uploadError) {
+        console.error('Upload Error:', uploadError)
+        throw new Error('Failed to upload audio')
+    }
+
+    // Get Public URL
+    const { data: { publicUrl } } = supabase
+        .storage
+        .from('meeting-audio')
+        .getPublicUrl(filename)
+
+    // Save to DB
+    const { error: dbError } = await supabase
+        .from('meetings')
+        .update({ audio_url: publicUrl })
+        .eq('id', meetingId)
+
+    if (dbError) {
+        console.error('DB Error:', dbError)
+        throw new Error('Failed to save audio URL to database')
+    }
+
+    revalidatePath(`/meetings/${meetingId}`)
+    return publicUrl
+}
