@@ -74,7 +74,7 @@ export default function OnboardingTutorial({ userId }: OnboardingTutorialProps) 
                 onClick={() => setIsVisible(true)}
                 className={styles.triggerButton}
             >
-                Tutoriál
+                Průvodce
             </button>
 
             {isVisible && (
