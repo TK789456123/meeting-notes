@@ -1,6 +1,7 @@
 
 import { createClient } from '@/utils/supabase/server'
 import styles from './dashboard.module.css'
+import Link from 'next/link'
 import DeleteMeetingButton from '@/components/meetings/DeleteMeetingButton'
 import SearchInput from '@/components/ui/search-input'
 import DashboardControls from './DashboardControls'
