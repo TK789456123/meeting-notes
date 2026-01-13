@@ -18,7 +18,17 @@ export default async function MeetingPage(props: { params: Promise<{ id: string 
 
     // Use Admin Client for fetching auxiliary data (Profiles/Participants) to bypass RLS
     // This ensures we can see names of all participants, not just ourselves
-    const adminSupabase = await createAdminClient()
+    // SAFETY CHECK: If service role key is missing, fallback to standard client (safe but RLS will hide names)
+    let adminSupabase = supabase;
+    const hasServiceKey = !!process.env.SUPABASE_SERVICE_ROLE_KEY;
+
+    if (hasServiceKey) {
+        try {
+            adminSupabase = await createAdminClient()
+        } catch (e) {
+            console.error("Failed to create admin client:", e)
+        }
+    }
 
     // 1. Fetch Basic Meeting Data (Standard Client - respects RLS for meeting access)
     const { data: meeting, error: meetingError } = await supabase
@@ -43,9 +53,10 @@ export default async function MeetingPage(props: { params: Promise<{ id: string 
     let actionItems: any[] = []
     let organizerName = 'Organizátor';
 
+    // Note: 'email' column must be added to profiles table via SQL script
     const { data: pData } = await adminSupabase
         .from('participants')
-        .select('user_id, profiles(id, full_name, avatar_url)')
+        .select('user_id, profiles(id, full_name, avatar_url, email)')
         .eq('meeting_id', meetingId)
     if (pData) participants = pData
 
@@ -78,6 +89,12 @@ export default async function MeetingPage(props: { params: Promise<{ id: string 
                 {errorMessage && (
                     <div className={styles.errorBanner}>
                         ⚠️ {errorMessage}
+                    </div>
+                )}
+
+                {!hasServiceKey && (
+                    <div className={styles.errorBanner} style={{ background: '#ffeaa7', color: '#d35400' }}>
+                        ⚠️ Upozornění: Chybí Service Role Key. Jména ostatních uživatelů mohou být skrytá.
                     </div>
                 )}
 
@@ -152,8 +169,8 @@ export default async function MeetingPage(props: { params: Promise<{ id: string 
                                 {(!participants || participants.length === 0) && <p className={styles.emptyText}>Zatím žádní účastníci</p>}
                                 {participants?.map((p: any) => (
                                     <div key={p.user_id} className={styles.person}>
-                                        <img src={p.profiles?.avatar_url || `https://ui-avatars.com/api/?name=${p.profiles?.full_name || 'Neznámý'}`} alt="" className={styles.avatar} />
-                                        <span>{p.profiles?.full_name || 'Neznámý uživatel'}</span>
+                                        <img src={p.profiles?.avatar_url || `https://ui-avatars.com/api/?name=${p.profiles?.full_name || p.profiles?.email || 'Neznámý'}`} alt="" className={styles.avatar} />
+                                        <span>{p.profiles?.full_name || p.profiles?.email || 'Neznámý uživatel'}</span>
                                     </div>
                                 ))}
                             </div>
