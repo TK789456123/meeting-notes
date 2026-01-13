@@ -53,31 +53,35 @@ export async function toggleActionItem(actionItemId: string, isCompleted: boolea
 
 export async function addParticipant(meetingId: string, formData: FormData) {
     const email = formData.get('email') as string
-    const supabase = await createClient()
+
+    // Use Admin Client to bypass RLS for adding participants
+    // This allows the organizer (or any allowed user) to add anyone efficiently
+    const { createAdminClient } = await import('@/utils/supabase/server')
+    const supabase = await createAdminClient()
 
     // Use RPC function defined in Supabase to securely find user and insert
-    // This removes the need for SUPABASE_SERVICE_ROLE_KEY environment variable
     const { error } = await supabase.rpc('add_meeting_participant', {
         meeting_id_arg: meetingId,
         email_arg: email
     })
 
     if (error) {
-        // Translate common errors from the database function
+        console.error('Error adding participant:', error)
         let errorMessage = error.message
+
         if (errorMessage.includes('User not found')) {
-            errorMessage = `Uživatel s emailem ${email} nebyl nalezen.`
+            errorMessage = `Uživatel s emailem "${email}" nebyl nalezen. Musí být registrován.`
         } else if (errorMessage.includes('Access denied')) {
-            errorMessage = 'Pouze organizátor může přidávat účastníky.'
+            errorMessage = 'Nemáte oprávnění přidávat účastníky.'
         } else if (errorMessage.includes('duplicate key') || errorMessage.includes('unique constraint')) {
-            errorMessage = 'Tento uživatel už je účastníkem.'
+            errorMessage = 'Tento uživatel už je na seznamu.'
         }
 
-        console.error('Error adding participant:', error)
-        redirect(`/meetings/${meetingId}?error=${encodeURIComponent(errorMessage)}`)
+        return { success: false, message: errorMessage }
     }
 
     revalidatePath(`/meetings/${meetingId}`)
+    return { success: true, message: 'Účastník byl úspěšně přidán.' }
 }
 
 export async function updateColor(meetingId: string, color: string) {
