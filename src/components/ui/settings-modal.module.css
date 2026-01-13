@@ -111,11 +111,29 @@
 /* Google Translate Overrides */
 .translateContainer {
     min-height: 60px;
+    position: relative;
+    overflow: visible;
 }
 
-/* Hide Google Translate top bar */
-:global(.skiptranslate) {
+#google_translate_element {
+    margin-left: auto;
+}
+
+/* Hide ONLY the Google Translate top bar frame */
+:global(.goog-te-banner-frame) {
     display: none !important;
+}
+
+:global(.goog-te-gadget-icon) {
+    display: none !important;
+}
+
+/* Allow the dropdown to be visible */
+:global(.goog-te-gadget-simple) {
+    background-color: transparent !important;
+    border: none !important;
+    padding: 0 !important;
+    font-size: 1rem !important;
 }
 
 :global(body) {
