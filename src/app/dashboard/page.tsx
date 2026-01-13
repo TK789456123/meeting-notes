@@ -58,7 +58,10 @@ export default async function DashboardPage(props: {
                         <Link
                             href={`/meetings/${meeting.id}`}
                             className={styles.card}
-                            style={{ borderColor: meeting.color || 'white' }}
+                            style={{
+                                borderColor: meeting.color || 'rgba(255,255,255,0.8)',
+                                background: meeting.color ? `${meeting.color}33` : 'rgba(255, 255, 255, 0.6)' // 33 = ~20% opacity
+                            }}
                         >
                             <div className={styles.cardHeader}>
                                 <span
