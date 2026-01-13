@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import styles from './onboarding-tutorial.module.css'
 import { completeTutorial } from '@/app/dashboard/actions'
 
@@ -38,7 +38,16 @@ const STEPS = [
 
 export default function OnboardingTutorial({ userId }: OnboardingTutorialProps) {
     const [currentStep, setCurrentStep] = useState(0)
-    const [isVisible, setIsVisible] = useState(true)
+    const [isVisible, setIsVisible] = useState(false)
+    const [mounted, setMounted] = useState(false)
+
+    useEffect(() => {
+        const seen = localStorage.getItem('meeting_notes_tutorial_seen')
+        if (!seen) {
+            setIsVisible(true)
+        }
+        setMounted(true)
+    }, [])
 
     const handleNext = async () => {
         if (currentStep < STEPS.length - 1) {
@@ -50,10 +59,11 @@ export default function OnboardingTutorial({ userId }: OnboardingTutorialProps) 
 
     const finishTutorial = async () => {
         setIsVisible(false)
+        localStorage.setItem('meeting_notes_tutorial_seen', 'true')
         await completeTutorial(userId)
     }
 
-    if (!isVisible) return null
+    if (!mounted || !isVisible) return null
 
     const step = STEPS[currentStep]
 
