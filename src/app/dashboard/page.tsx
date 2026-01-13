@@ -47,7 +47,7 @@ export default async function DashboardPage(props: {
 
     return (
         <div className={styles.container}>
-            {showTutorial && user && <OnboardingTutorial userId={user.id} />}
+            {/* {showTutorial && user && <OnboardingTutorial userId={user.id} />} */}
 
             <header className={styles.header}>
                 <div>
