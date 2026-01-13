@@ -78,17 +78,6 @@ export default function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
                 </div>
 
                 <div className={styles.section}>
-                    <h3 className={styles.sectionTitle}>Vzhled</h3>
-                    <div className={styles.row}>
-                        <div className={styles.label}>
-                            {theme === 'dark' ? <Sun size={20} /> : <Moon size={20} />}
-                            {theme === 'dark' ? 'Světlý režim' : 'Tmavý režim'}
-                        </div>
-                        <ThemeToggle />
-                    </div>
-                </div>
-
-                <div className={styles.section}>
                     <h3 className={styles.sectionTitle}>Jazyk</h3>
                     <div className={[styles.row, styles.translateContainer].join(' ')}>
                         <div className={styles.label}>
@@ -100,6 +89,17 @@ export default function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
                     <p style={{ fontSize: '0.8rem', color: '#718096', marginTop: '0.5rem' }}>
                         * Překlad zajišťuje Google Translate
                     </p>
+                </div>
+
+                <div className={styles.section}>
+                    <h3 className={styles.sectionTitle}>Vzhled</h3>
+                    <div className={styles.row}>
+                        <div className={styles.label}>
+                            {theme === 'dark' ? <Sun size={20} /> : <Moon size={20} />}
+                            {theme === 'dark' ? 'Světlý režim' : 'Tmavý režim'}
+                        </div>
+                        <ThemeToggle />
+                    </div>
                 </div>
 
                 <div className={styles.section}>

@@ -16,6 +16,8 @@
 .modal {
     background: white;
     padding: 2rem;
+    padding-bottom: 5rem;
+    /* Extra space for bottom scrolling */
     border-radius: 24px;
     width: 90%;
     max-width: 500px;
