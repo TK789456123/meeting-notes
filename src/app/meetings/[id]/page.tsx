@@ -92,7 +92,7 @@ export default async function MeetingPage(props: { params: Promise<{ id: string 
                                 {meeting.category}
                             </span>
                         )}
-                        <h1 className={styles.title}>{meeting.title}</h1>
+                        <h1 className={styles.title}>{meeting.title} <span style={{ fontSize: '0.5em', color: '#ccc' }}>(v2.0 FIXED)</span></h1>
                     </div>
                     <div className={styles.headerRight}>
                         <div className={styles.meta}>
