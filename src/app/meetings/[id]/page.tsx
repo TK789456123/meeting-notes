@@ -7,6 +7,7 @@ import { updateNotes, addActionItem, toggleActionItem, addParticipant } from './
 import Link from 'next/link'
 import { CheckCircle2, Circle, Calendar, User, Clock, ArrowLeft } from 'lucide-react'
 import { DynamicExportButtons, DynamicShareMeetingButton, DynamicAudioRecorder } from '@/components/meetings/ClientWrappers'
+import AddParticipantForm from '@/components/meetings/AddParticipantForm'
 
 export default async function MeetingPage(props: { params: Promise<{ id: string }>, searchParams: Promise<{ error?: string }> }) {
     const params = await props.params
@@ -157,11 +158,7 @@ export default async function MeetingPage(props: { params: Promise<{ id: string 
                                 ))}
                             </div>
 
-                            <form action={addParticipant.bind(null, meetingId)} className={styles.addActionForm} style={{ marginTop: '1rem' }}>
-                                <label className={styles.labelSmall}>Přidat účastníka (email):</label>
-                                <input type="email" name="email" placeholder="client@example.com" required />
-                                <button type="submit">Přidat účastníka</button>
-                            </form>
+                            <AddParticipantForm meetingId={meetingId} />
                         </section>
 
                         <section className={styles.section}>
