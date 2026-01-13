@@ -1,12 +1,9 @@
 
 import { createClient } from '@/utils/supabase/server'
 import styles from './dashboard.module.css'
-import Link from 'next/link'
-import { Plus, Settings } from 'lucide-react'
-
 import DeleteMeetingButton from '@/components/meetings/DeleteMeetingButton'
 import SearchInput from '@/components/ui/search-input'
-import OnboardingTutorial from '@/components/ui/OnboardingTutorial'
+import DashboardControls from './DashboardControls'
 
 export default async function DashboardPage(props: {
     searchParams?: Promise<{
@@ -53,17 +50,7 @@ export default async function DashboardPage(props: {
                     <p className={styles.subtitle}>Přehled všech vašich naplánovaných meetingů</p>
                 </div>
                 <div className={styles.headerButtons}>
-                    {user && <OnboardingTutorial userId={user.id} />}
-                    <button className={styles.iconButton} aria-label="Nastavení">
-                        <Settings size={20} />
-                    </button>
-                    <Link href="/import" className={styles.secondaryButton}>
-                        Importovat (TXT)
-                    </Link>
-                    <Link href="/meetings/new" className={styles.addButton}>
-                        <Plus size={20} />
-                        Nová schůzka
-                    </Link>
+                    <DashboardControls userId={user?.id} />
                 </div>
             </header>
 

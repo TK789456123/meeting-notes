@@ -25,7 +25,7 @@ export default async function Navbar() {
                 <Link href="/">MeetingNotes</Link>
             </div>
             <div className={styles.userMenu}>
-                <ThemeToggle />
+                {/* ThemeToggle moved to Settings */}
                 {user ? (
                     <>
                         <span className={styles.email}>{user.email}</span>

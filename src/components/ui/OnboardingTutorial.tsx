@@ -30,6 +30,11 @@ const STEPS = [
         icon: "🎨"
     },
     {
+        title: "Nastavení a Jazyky 🌍",
+        description: "Pod ozubeným kolečkem najdeš přepínání tmavého režimu a Google překladač, který umí přeložit aplikaci do všech jazyků světa.",
+        icon: "⚙️"
+    },
+    {
         title: "To je vše!",
         description: "Užij si plánování. Kdyby něco, roboti jsou tu, aby pomohli! 🤖",
         icon: "✨"
