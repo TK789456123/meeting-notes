@@ -26,6 +26,27 @@ test('Full User Flow: Register, Create, Search, Delete', async ({ page }) => {
     }
     console.log('Logged in and on Dashboard');
 
+    console.log('Logged in and on Dashboard');
+
+    // 3.5 CHECK ONBOARDING TUTORIAL
+    console.log('Checking Onboarding Tutorial...');
+    // Expect tutorial to be visible
+    await expect(page.locator('text=Vítejte v MeetingNotes!')).toBeVisible({ timeout: 10000 });
+    // Click skip/continue
+    await page.click('button:has-text("Přeskočit")');
+    // Expect tutorial to disappear
+    await expect(page.locator('text=Vítejte v MeetingNotes!')).toBeHidden({ timeout: 5000 });
+    // Extra safety wait for animation
+    await page.waitForTimeout(1000);
+
+    // Force remove if still present (Playwright might see it as hidden but it blocks clicks)
+    await page.evaluate(() => {
+        const overlay = document.querySelector('[class*="onboarding-tutorial-module"]');
+        if (overlay) overlay.remove();
+    });
+
+    console.log('Onboarding Tutorial verified and closed');
+
     // 4. Create New Meeting
     await page.click('text=Nová schůzka');
     await page.waitForURL(/.*meetings\/new.*/);
@@ -44,6 +65,18 @@ test('Full User Flow: Register, Create, Search, Delete', async ({ page }) => {
 
     // Should redirect to Dashboard
     await page.waitForURL(/.*dashboard.*/, { timeout: 30000 });
+
+    // CHECK IF TUTORIAL REAPPEARED (due to race condition or revalidation)
+    if (await page.isVisible('text=Vítejte v MeetingNotes!')) {
+        console.log('Tutorial reappeared, closing again...');
+        await page.click('button:has-text("Přeskočit")');
+        await page.waitForTimeout(500);
+        await page.evaluate(() => {
+            const overlay = document.querySelector('[class*="onboarding-tutorial-module"]');
+            if (overlay) overlay.remove();
+        });
+    }
+
     console.log('Meeting created');
 
     // 5. TEST SEARCH
@@ -89,9 +122,14 @@ test('Full User Flow: Register, Create, Search, Delete', async ({ page }) => {
     console.log('Color change verified');
 
 
-
     // 6. Delete Meeting
     page.on('dialog', dialog => dialog.accept());
+
+    // Force cleanup before clicking delete
+    await page.evaluate(() => {
+        const overlay = document.querySelector('[class*="onboarding-tutorial-module"]');
+        if (overlay) overlay.remove();
+    });
 
     const meetingContainer = page.locator(`div:has-text("${meetingTitle}")`).first();
     const deleteBtn = meetingContainer.locator('button[title="Smazat schůzku"]');

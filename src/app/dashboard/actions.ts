@@ -16,6 +16,15 @@ export async function deleteMeeting(meetingId: string) {
 
 export async function completeTutorial(userId: string) {
     const supabase = await createClient()
-    await supabase.from('profiles').update({ has_seen_tutorial: true }).eq('id', userId)
+
+    // Use upsert to create profile if it doesn't exist (e.g., old users from before the trigger was fixed)
+    await supabase.from('profiles').upsert({
+        id: userId,
+        has_seen_tutorial: true,
+        updated_at: new Date().toISOString()
+    }, {
+        onConflict: 'id'
+    })
+
     revalidatePath('/dashboard')
 }
