@@ -5,6 +5,8 @@ import Link from 'next/link'
 import styles from './Navbar.module.css'
 import { ThemeToggle } from '../ui/theme-toggle'
 
+import NavbarSettings from './NavbarSettings'
+
 export default async function Navbar() {
     const supabase = await createClient()
 
@@ -25,7 +27,7 @@ export default async function Navbar() {
                 <Link href="/">MeetingNotes</Link>
             </div>
             <div className={styles.userMenu}>
-                {/* ThemeToggle moved to Settings */}
+                <NavbarSettings />
                 {user ? (
                     <>
                         <span className={styles.email}>{user.email}</span>
