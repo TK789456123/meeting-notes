@@ -1,6 +1,6 @@
 
 // FORCE DEPLOY TRIGGER 2
-import { createClient } from '@/utils/supabase/server'
+import { createClient, createAdminClient } from '@/utils/supabase/server'
 import Navbar from '@/components/layout/Navbar'
 import styles from './meeting.module.css'
 import { updateNotes, addActionItem, toggleActionItem, addParticipant } from './actions'
@@ -15,7 +15,11 @@ export default async function MeetingPage(props: { params: Promise<{ id: string 
     const errorMessage = searchParams.error
     const supabase = await createClient()
 
-    // 1. Fetch Basic Meeting Data
+    // Use Admin Client for fetching auxiliary data (Profiles/Participants) to bypass RLS
+    // This ensures we can see names of all participants, not just ourselves
+    const adminSupabase = await createAdminClient()
+
+    // 1. Fetch Basic Meeting Data (Standard Client - respects RLS for meeting access)
     const { data: meeting, error: meetingError } = await supabase
         .from('meetings')
         .select('*')
@@ -33,27 +37,27 @@ export default async function MeetingPage(props: { params: Promise<{ id: string 
         )
     }
 
-    // 2. Fetch Helper Data (Participants & Tasks)
+    // 2. Fetch Helper Data (Participants & Tasks) - USE ADMIN CLIENT
     let participants: any[] = []
     let actionItems: any[] = []
     let organizerName = 'Organizátor';
 
-    const { data: pData } = await supabase
+    const { data: pData } = await adminSupabase
         .from('participants')
         .select('user_id, profiles(id, full_name, avatar_url)')
         .eq('meeting_id', meetingId)
     if (pData) participants = pData
 
-    const { data: aiData } = await supabase
+    const { data: aiData } = await adminSupabase
         .from('action_items')
         .select('*, profiles:assignee_id(full_name)')
         .eq('meeting_id', meetingId)
         .order('created_at', { ascending: true })
     if (aiData) actionItems = aiData
 
-    // 3. Resolve Organizer Name manually
+    // 3. Resolve Organizer Name manually (Admin)
     if (meeting.organizer_id) {
-        const { data: orgProfile } = await supabase
+        const { data: orgProfile } = await adminSupabase
             .from('profiles')
             .select('full_name')
             .eq('id', meeting.organizer_id)
