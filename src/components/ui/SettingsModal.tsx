@@ -87,7 +87,7 @@ export default function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
                     <div className={[styles.row, styles.translateContainer].join(' ')}>
                         <div className={styles.label}>
                             <Globe size={20} />
-                            Jazyk aplikace
+                            Jazyk
                         </div>
                         <div id="google_translate_element"></div>
                     </div>
