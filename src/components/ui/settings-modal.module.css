@@ -134,6 +134,29 @@
     border: none !important;
     padding: 0 !important;
     font-size: 1rem !important;
+    line-height: 2 !important;
+    display: inline-block !important;
+    cursor: pointer !important;
+}
+
+:global(.goog-te-gadget-simple span) {
+    color: #4a5568 !important;
+    /* Default dark text */
+}
+
+:global(.goog-te-gadget-simple .goog-te-menu-value span:first-child) {
+    display: none;
+    /* Hide 'Select Language' if needed, but we want to see it */
+}
+
+/* Dark mode overrides for translate */
+[data-theme='dark'] :global(.goog-te-gadget-simple span) {
+    color: #cbd5e0 !important;
+}
+
+:global(.goog-te-gadget-simple img) {
+    display: none !important;
+    /* Hide Google icon if desired, or keep it */
 }
 
 :global(body) {
