@@ -57,7 +57,15 @@ export async function addParticipant(meetingId: string, formData: FormData) {
     // Use Admin Client to bypass RLS for adding participants
     // This allows the organizer (or any allowed user) to add anyone efficiently
     const { createAdminClient } = await import('@/utils/supabase/server')
-    const supabase = await createAdminClient()
+
+    // Safety check for admin client creation
+    let supabase;
+    try {
+        supabase = await createAdminClient()
+    } catch (e) {
+        console.error("Failed to create admin client, falling back", e)
+        supabase = await createClient()
+    }
 
     // Use RPC function defined in Supabase to securely find user and insert
     const { error } = await supabase.rpc('add_meeting_participant', {
