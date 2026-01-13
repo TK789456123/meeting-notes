@@ -98,7 +98,7 @@ export default async function MeetingPage(props: { params: Promise<{ id: string 
                                 {meeting.profiles?.full_name}
                             </div>
                         </div>
-                        <div style={{ display: 'flex', gap: '0.5rem' }}>
+                        <div style={{ display: 'flex', gap: '0.8rem', marginTop: '1rem', marginBottom: '2rem', alignItems: 'center', flexWrap: 'wrap' }}>
                             <ShareMeetingButton meetingId={meeting.id} />
                             <ExportButtons meeting={meeting} />
                         </div>

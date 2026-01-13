@@ -1,8 +1,7 @@
 .container {
     display: flex;
     gap: 0.8rem;
-    margin-top: 1rem;
-    margin-bottom: 2rem;
+    align-items: center;
 }
 
 .button {
