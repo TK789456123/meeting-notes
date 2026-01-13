@@ -1,9 +1,11 @@
 'use client'
 
-import { Download, Calendar as CalendarIcon, FileText } from 'lucide-react'
+
+import { Download, Calendar as CalendarIcon, FileText, Palette } from 'lucide-react'
 import jsPDF from 'jspdf'
 import * as ics from 'ics'
 import styles from './export-buttons.module.css'
+import { updateColor } from '@/app/meetings/[id]/actions'
 
 interface ExportButtonsProps {
     meeting: {
@@ -13,12 +15,20 @@ interface ExportButtonsProps {
         agenda: string
         notes: string
         category?: string
+        color?: string
     }
 }
 
 export default function ExportButtons({ meeting }: ExportButtonsProps) {
 
+    const handleColorChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+        const newColor = e.target.value
+        await updateColor(meeting.id, newColor)
+    }
+
     const handleDownloadPDF = () => {
+        // ... existing PDF logic
+
         const doc = new jsPDF()
 
         // Font setup (standard helvetica supports basics, for unicode cs chars we might need custom font but trying standard first)
@@ -82,6 +92,16 @@ export default function ExportButtons({ meeting }: ExportButtonsProps) {
 
     return (
         <div className={styles.container}>
+            <div className={styles.colorWrapper} title="Změnit barvu">
+                <Palette size={18} className={styles.colorIcon} />
+                <input
+                    type="color"
+                    onChange={handleColorChange}
+                    defaultValue={meeting.color || '#667eea'}
+                    className={styles.colorInput}
+                />
+            </div>
+
             <button onClick={handleDownloadPDF} className={styles.button} title="Stáhnout jako PDF">
                 <FileText size={18} />
                 <span>PDF Zápis</span>

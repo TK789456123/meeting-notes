@@ -79,3 +79,9 @@ export async function addParticipant(meetingId: string, formData: FormData) {
 
     revalidatePath(`/meetings/${meetingId}`)
 }
+
+export async function updateColor(meetingId: string, color: string) {
+    const supabase = await createClient()
+    await supabase.from('meetings').update({ color }).eq('id', meetingId)
+    revalidatePath(`/meetings/${meetingId}`)
+}

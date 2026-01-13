@@ -55,9 +55,19 @@ export default async function DashboardPage(props: {
                 {meetings?.map((meeting) => (
                     <div key={meeting.id} style={{ position: 'relative' }}>
                         <DeleteMeetingButton id={meeting.id} />
-                        <Link href={`/meetings/${meeting.id}`} className={styles.card}>
+                        <Link
+                            href={`/meetings/${meeting.id}`}
+                            className={styles.card}
+                            style={{ borderColor: meeting.color || 'white' }}
+                        >
                             <div className={styles.cardHeader}>
-                                <span className={styles.date}>
+                                <span
+                                    className={styles.date}
+                                    style={{
+                                        background: meeting.color ? `${meeting.color}20` : 'rgba(102, 126, 234, 0.1)',
+                                        color: meeting.color || '#667eea'
+                                    }}
+                                >
                                     {new Date(meeting.date).toLocaleDateString('cs-CZ')}
                                 </span>
                             </div>
