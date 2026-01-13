@@ -30,7 +30,6 @@ export default function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
             window.googleTranslateElementInit = () => {
                 new window.google.translate.TranslateElement(
                     {
-                        pageLanguage: 'cs',
                         layout: window.google.translate.TranslateElement.InlineLayout.SIMPLE,
                         autoDisplay: false
                     },
@@ -47,7 +46,6 @@ export default function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
             try {
                 new window.google.translate.TranslateElement(
                     {
-                        pageLanguage: 'cs',
                         layout: window.google.translate.TranslateElement.InlineLayout.SIMPLE,
                         autoDisplay: false
                     },
