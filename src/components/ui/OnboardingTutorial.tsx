@@ -66,6 +66,8 @@ export default function OnboardingTutorial({ userId }: OnboardingTutorialProps) 
 
     if (!mounted) return null
 
+    const step = STEPS[currentStep]
+
     return (
         <>
             <button

@@ -46,6 +46,7 @@ export default async function DashboardPage(props: {
     const { data: meetings } = await queryBuilder
 
     return (
+        <div className={styles.container}>
             <header className={styles.header}>
                 <div>
                     <h1 className={styles.title}>Moje schůzky</h1>
