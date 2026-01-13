@@ -58,23 +58,48 @@ export default async function MeetingPage(props: { params: Promise<{ id: string 
                     </div>
                 )}
 
+
+                import ExportButtons from '@/components/meetings/ExportButtons'
+
+                // ...
+
                 <header className={styles.header}>
-                    <h1 className={styles.title}>{meeting.title}</h1>
-                    <div className={styles.meta}>
-                        <div className={styles.metaItem}>
-                            <Calendar size={18} />
-                            {new Date(meeting.date).toLocaleDateString('cs-CZ')}
+                    <div>
+                        {meeting.category && (
+                            <span style={{
+                                display: 'inline-block',
+                                padding: '0.2rem 0.6rem',
+                                borderRadius: '12px',
+                                background: meeting.color || '#667eea',
+                                color: 'white',
+                                fontSize: '0.8rem',
+                                fontWeight: 'bold',
+                                marginBottom: '0.5rem'
+                            }}>
+                                {meeting.category}
+                            </span>
+                        )}
+                        <h1 className={styles.title}>{meeting.title}</h1>
+                    </div>
+                    <div className={styles.headerRight} style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '0.5rem' }}>
+                        <div className={styles.meta}>
+                            <div className={styles.metaItem}>
+                                <Calendar size={18} />
+                                {new Date(meeting.date).toLocaleDateString('cs-CZ')}
+                            </div>
+                            <div className={styles.metaItem}>
+                                <Clock size={18} />
+                                {new Date(meeting.date).toLocaleTimeString('cs-CZ', { hour: '2-digit', minute: '2-digit' })}
+                            </div>
+                            <div className={styles.metaItem}>
+                                <User size={18} />
+                                {meeting.profiles?.full_name}
+                            </div>
                         </div>
-                        <div className={styles.metaItem}>
-                            <Clock size={18} />
-                            {new Date(meeting.date).toLocaleTimeString('cs-CZ', { hour: '2-digit', minute: '2-digit' })}
-                        </div>
-                        <div className={styles.metaItem}>
-                            <User size={18} />
-                            {meeting.profiles?.full_name}
-                        </div>
+                        <ExportButtons meeting={meeting} />
                     </div>
                 </header>
+
 
                 <div className={styles.grid}>
                     <div className={styles.column}>
