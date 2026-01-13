@@ -6,21 +6,7 @@ import styles from './meeting.module.css'
 import { updateNotes, addActionItem, toggleActionItem, addParticipant } from './actions'
 import Link from 'next/link'
 import { CheckCircle2, Circle, Calendar, User, Clock, ArrowLeft } from 'lucide-react'
-import dynamic from 'next/dynamic'
-
-// Dynamically import client components to prevent SSR crashes (e.g. window/navigator access)
-const ExportButtons = dynamic(() => import('@/components/meetings/ExportButtons'), {
-    ssr: false,
-    loading: () => <button className={styles.buttonDisabled}>Načítám export...</button>
-})
-const ShareMeetingButton = dynamic(() => import('@/components/meetings/ShareMeetingButton'), {
-    ssr: false,
-    loading: () => <button className={styles.buttonDisabled}>...</button>
-})
-const AudioRecorder = dynamic(() => import('@/components/meetings/AudioRecorder'), {
-    ssr: false,
-    loading: () => <div className={styles.recorderLoading}>Načítám nahrávání...</div>
-})
+import { DynamicExportButtons, DynamicShareMeetingButton, DynamicAudioRecorder } from '@/components/meetings/ClientWrappers'
 
 export default async function MeetingPage(props: { params: Promise<{ id: string }>, searchParams: Promise<{ error?: string }> }) {
     const params = await props.params
@@ -110,8 +96,8 @@ export default async function MeetingPage(props: { params: Promise<{ id: string 
                             </div>
                         </div>
                         <div className={styles.actionsRow}>
-                            <ShareMeetingButton meetingId={meeting.id} />
-                            <ExportButtons meeting={meeting} />
+                            <DynamicShareMeetingButton meetingId={meeting.id} />
+                            <DynamicExportButtons meeting={meeting} />
                         </div>
                     </div>
                 </header>
@@ -125,7 +111,7 @@ export default async function MeetingPage(props: { params: Promise<{ id: string 
                                     <audio src={meeting.audio_url} controls style={{ width: '100%' }} />
                                 </div>
                             )}
-                            <AudioRecorder meetingId={meeting.id} />
+                            <DynamicAudioRecorder meetingId={meeting.id} />
                         </section>
 
                         <section className={styles.section}>
