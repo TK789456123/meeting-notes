@@ -5,7 +5,7 @@ import Link from 'next/link'
 import { Plus } from 'lucide-react'
 
 import DeleteMeetingButton from '@/components/meetings/DeleteMeetingButton'
-import Search from '@/components/ui/Search'
+import SearchInput from '@/components/ui/search-input'
 import OnboardingTutorial from '@/components/ui/OnboardingTutorial'
 
 export default async function DashboardPage(props: {
