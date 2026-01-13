@@ -1,7 +1,8 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { X, Moon, Globe, MessageSquare } from 'lucide-react'
+import { X, Moon, Sun, Globe, MessageSquare } from 'lucide-react'
+import { useTheme } from 'next-themes'
 import { ThemeToggle } from './theme-toggle'
 import styles from './settings-modal.module.css'
 
@@ -19,6 +20,7 @@ declare global {
 
 export default function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
     const [mounted, setMounted] = useState(false)
+    const { theme } = useTheme()
 
     useEffect(() => {
         setMounted(true)
@@ -73,8 +75,8 @@ export default function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
                     <h3 className={styles.sectionTitle}>Vzhled</h3>
                     <div className={styles.row}>
                         <div className={styles.label}>
-                            <Moon size={20} />
-                            Tmavý režim
+                            {theme === 'dark' ? <Sun size={20} /> : <Moon size={20} />}
+                            {theme === 'dark' ? 'Světlý režim' : 'Tmavý režim'}
                         </div>
                         <ThemeToggle />
                     </div>
