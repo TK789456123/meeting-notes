@@ -89,9 +89,7 @@ export default function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
                             <Globe size={20} />
                             Jazyk
                         </div>
-                        <div id="google_translate_element">
-                            <span style={{ color: '#4a5568', fontWeight: 500, cursor: 'pointer' }}>Čeština ▾</span>
-                        </div>
+                        <div id="google_translate_element"></div>
                     </div>
                     <p style={{ fontSize: '0.8rem', color: '#718096', marginTop: '0.5rem' }}>
                         * Překlad zajišťuje Google Translate

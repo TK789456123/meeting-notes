@@ -129,6 +129,7 @@
 }
 
 /* Allow the dropdown to be visible */
+/* Allow the dropdown to be visible */
 :global(.goog-te-gadget-simple) {
     background-color: transparent !important;
     border: none !important;
@@ -140,26 +141,31 @@
     cursor: pointer !important;
 }
 
-/* Hide the default "Select Language" text */
 :global(.goog-te-gadget-simple span) {
-    display: none !important;
+    color: #4a5568 !important;
+    /* Default dark text */
+    text-decoration: none !important;
 }
 
-/* Inject our own label "Čeština" with an arrow */
-:global(.goog-te-gadget-simple)::after {
-    content: 'Čeština ▾';
-    color: #4a5568;
-    font-weight: 500;
-    margin-right: 10px;
+:global(.goog-te-gadget-simple .goog-te-menu-value) {
+    color: #4a5568 !important;
 }
 
-/* Dark mode override for the injected text */
-[data-theme='dark'] :global(.goog-te-gadget-simple)::after {
-    color: #cbd5e0;
+:global(.goog-te-gadget-simple .goog-te-menu-value span) {
+    color: #4a5568 !important;
+    text-decoration: none !important;
+}
+
+/* Dark mode overrides for translate */
+[data-theme='dark'] :global(.goog-te-gadget-simple span),
+[data-theme='dark'] :global(.goog-te-gadget-simple .goog-te-menu-value),
+[data-theme='dark'] :global(.goog-te-gadget-simple .goog-te-menu-value span) {
+    color: #cbd5e0 !important;
 }
 
 :global(.goog-te-gadget-simple img) {
     display: none !important;
+    /* Keep Google icon hidden for clean look */
 }
 
 :global(body) {
