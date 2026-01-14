@@ -3,7 +3,7 @@ import { createClient } from '@/utils/supabase/server'
 import { redirect } from 'next/navigation'
 import Link from 'next/link'
 import styles from './Navbar.module.css'
-import { ThemeToggle } from '../ui/theme-toggle'
+
 
 import NavbarSettings from './NavbarSettings'
 import UserAvatar from './UserAvatar'

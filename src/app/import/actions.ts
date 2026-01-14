@@ -10,7 +10,7 @@ export interface ImportState {
 
 export async function importMeetings(_prevState: ImportState, formData: FormData): Promise<ImportState> {
     let successCount = 0
-    let errors: string[] = []
+    const errors: string[] = []
 
     try {
         const file = formData.get('file') as File
