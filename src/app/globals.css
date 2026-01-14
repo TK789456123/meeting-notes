@@ -89,3 +89,26 @@ body {
 .goog-te-gadget-simple .goog-te-menu-value span {
   color: var(--text-primary) !important;
 }
+
+/* Force readable colors for Google Translate Dropdown (Fix for Dark Mode) */
+.goog-te-menu-frame,
+.goog-te-menu2 {
+  background-color: #ffffff !important;
+  border: 1px solid #e2e8f0 !important;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1) !important;
+}
+
+.goog-te-menu2-item div,
+.goog-te-menu2-item-selected div {
+  color: #1a202c !important;
+  background-color: #ffffff !important;
+}
+
+.goog-te-menu2-item:hover div {
+  background-color: #ebf8ff !important;
+  color: #2b6cb0 !important;
+}
+
+iframe.goog-te-menu-frame {
+  z-index: 9999 !important;
+}
