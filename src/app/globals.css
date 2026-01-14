@@ -68,15 +68,16 @@ body {
 }
 
 /* Hide the Google icon in the dropdown trigger if desired for cleaner look */
-.goog-te-gadget-icon {
-  display: none !important;
-}
+/* Hide the Google icon in the dropdown trigger if desired for cleaner look */
+/* .goog-te-gadget-icon {
+    display: none !important;
+} */
 
 /* Remove the simple view link */
 .goog-te-gadget-simple {
   background-color: transparent !important;
   border: none !important;
-  padding: 0 !important;
+  /* padding: 0 !important; */
   font-size: 14px !important;
 }
 
