@@ -49,13 +49,15 @@ export default function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
 
         if (isOpen) {
             const initGoogleTranslate = () => {
+                // TEMPORARILY DISABLED TO DEUBG CRASH
+                /*
                 try {
                     const element = document.getElementById('google_translate_element')
-                    if (element && !element.children.length &&
-                        window.google &&
-                        window.google.translate &&
+                    if (element && !element.children.length && 
+                        window.google && 
+                        window.google.translate && 
                         window.google.translate.TranslateElement) {
-
+                        
                         new window.google.translate.TranslateElement(
                             {
                                 pageLanguage: 'cs',
@@ -67,6 +69,7 @@ export default function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
                 } catch (e) {
                     console.error('Google Translate Init Error:', e)
                 }
+                */
             }
 
             window.googleTranslateElementInit = initGoogleTranslate
