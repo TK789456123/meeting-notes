@@ -3,7 +3,8 @@
 import { useState, useEffect, useRef } from 'react'
 import styles from './onboarding-tutorial.module.css'
 import { completeTutorial } from '@/app/dashboard/actions'
-import { Volume2, VolumeX, Play } from 'lucide-react'
+import { Volume2, VolumeX } from 'lucide-react'
+import Image from 'next/image'
 
 interface OnboardingTutorialProps {
     userId: string
@@ -47,7 +48,6 @@ export default function OnboardingTutorial({ userId }: OnboardingTutorialProps) 
     const [isVisible, setIsVisible] = useState(false)
     const [mounted, setMounted] = useState(false)
     const [isMuted, setIsMuted] = useState(false)
-    const hasSpokenRef = useRef<boolean>(false)
     const descriptionRef = useRef<HTMLParagraphElement>(null)
 
     useEffect(() => {
@@ -58,39 +58,6 @@ export default function OnboardingTutorial({ userId }: OnboardingTutorialProps) 
             setIsVisible(true)
         }
     }, [])
-
-    useEffect(() => {
-        try {
-            const runSpeak = () => {
-                // Short delay to allow render and prevent race conditions
-                const timer = setTimeout(() => {
-                    speak()
-                }, 500)
-                return () => clearTimeout(timer)
-            }
-
-            if (isVisible && !isMuted) {
-                runSpeak()
-            }
-
-            // Ensure we retry if voices weren't ready
-            if (typeof window !== 'undefined' && window.speechSynthesis) {
-                window.speechSynthesis.onvoiceschanged = () => {
-                    if (isVisible && !isMuted) {
-                        speak()
-                    }
-                }
-            }
-        } catch (err) {
-            console.error('Tutorial Effect Error:', err)
-        }
-
-        return () => {
-            if (typeof window !== 'undefined' && window.speechSynthesis) {
-                window.speechSynthesis.cancel()
-            }
-        }
-    }, [currentStep, isVisible, isMuted])
 
     const speak = () => {
         if (typeof window === 'undefined') return
@@ -146,13 +113,41 @@ export default function OnboardingTutorial({ userId }: OnboardingTutorialProps) 
         }
     }
 
-    const handleNext = async () => {
-        if (currentStep < STEPS.length - 1) {
-            setCurrentStep(prev => prev + 1)
-        } else {
-            await finishTutorial()
+    useEffect(() => {
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+        try {
+            const runSpeak = () => {
+                // Short delay to allow render and prevent race conditions
+                const timer = setTimeout(() => {
+                    speak()
+                }, 500)
+                return () => clearTimeout(timer)
+            }
+
+            if (isVisible && !isMuted) {
+                runSpeak()
+            }
+
+            // Ensure we retry if voices weren't ready
+            if (typeof window !== 'undefined' && window.speechSynthesis) {
+                window.speechSynthesis.onvoiceschanged = () => {
+                    if (isVisible && !isMuted) {
+                        speak()
+                    }
+                }
+            }
+        } catch (err) {
+            console.error('Tutorial Effect Error:', err)
         }
-    }
+
+        return () => {
+            if (typeof window !== 'undefined' && window.speechSynthesis) {
+                window.speechSynthesis.cancel()
+            }
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [currentStep, isVisible, isMuted])
+
 
     const finishTutorial = async () => {
         if (typeof window !== 'undefined') {
@@ -163,8 +158,16 @@ export default function OnboardingTutorial({ userId }: OnboardingTutorialProps) 
         localStorage.setItem('meeting_notes_tutorial_seen', 'true')
         try {
             await completeTutorial(userId)
-        } catch (e) {
+        } catch {
             // ignore
+        }
+    }
+
+    const handleNext = async () => {
+        if (currentStep < STEPS.length - 1) {
+            setCurrentStep(prev => prev + 1)
+        } else {
+            await finishTutorial()
         }
     }
 
@@ -188,10 +191,13 @@ export default function OnboardingTutorial({ userId }: OnboardingTutorialProps) 
 
                         {/* Character Section */}
                         <div className={styles.characterContainer}>
-                            <img
+                            <Image
                                 src="/guide-character.png"
                                 alt="Průvodce"
                                 className={styles.characterImage}
+                                width={120}
+                                height={120}
+                                unoptimized
                             />
                         </div>
 

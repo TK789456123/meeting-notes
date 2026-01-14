@@ -1,0 +1,100 @@
+
+> meeting-notes-app@0.1.0 lint
+> eslint
+
+
+C:\Users\Uživatel\Desktop\Motko\meeting-notes-app\next.config.ts
+  1:1   error    Do not use "@ts-nocheck" because it alters compilation errors  @typescript-eslint/ban-ts-comment
+  2:15  warning  'NextConfig' is defined but never used                         @typescript-eslint/no-unused-vars
+
+C:\Users\Uživatel\Desktop\Motko\meeting-notes-app\src\app\auth\callback\route.ts
+  2:10  warning  'startTransition' is defined but never used  @typescript-eslint/no-unused-vars
+
+C:\Users\Uživatel\Desktop\Motko\meeting-notes-app\src\app\import\actions.ts
+  13:9  error  'errors' is never reassigned. Use 'const' instead  prefer-const
+
+C:\Users\Uživatel\Desktop\Motko\meeting-notes-app\src\app\meetings\[id]\page.tsx
+    6:56  warning  'addParticipant' is defined but never used                                                                                                                                                                                                                                               @typescript-eslint/no-unused-vars
+   52:23  error    Unexpected any. Specify a different type                                                                                                                                                                                                                                                 @typescript-eslint/no-explicit-any
+   53:22  error    Unexpected any. Specify a different type                                                                                                                                                                                                                                                 @typescript-eslint/no-explicit-any
+   65:62  error    Unexpected any. Specify a different type                                                                                                                                                                                                                                                 @typescript-eslint/no-explicit-any
+   68:45  warning  'error' is assigned a value but never used                                                                                                                                                                                                                                               @typescript-eslint/no-unused-vars
+  193:56  error    Unexpected any. Specify a different type                                                                                                                                                                                                                                                 @typescript-eslint/no-explicit-any
+  195:41  warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+  233:68  error    Unexpected any. Specify a different type                                                                                                                                                                                                                                                 @typescript-eslint/no-explicit-any
+
+C:\Users\Uživatel\Desktop\Motko\meeting-notes-app\src\app\share\[token]\page.tsx
+  32:36  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\Uživatel\Desktop\Motko\meeting-notes-app\src\components\layout\AvatarUploadModal.tsx
+  21:11  warning  'router' is assigned a value but never used                                                                                                                                                                                                                                              @typescript-eslint/no-unused-vars
+  72:25  warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+  74:25  warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
+C:\Users\Uživatel\Desktop\Motko\meeting-notes-app\src\components\layout\Navbar.tsx
+  6:10  warning  'ThemeToggle' is defined but never used  @typescript-eslint/no-unused-vars
+
+C:\Users\Uživatel\Desktop\Motko\meeting-notes-app\src\components\layout\UserAvatar.tsx
+  28:21  warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
+C:\Users\Uživatel\Desktop\Motko\meeting-notes-app\src\components\layout\actions.ts
+  64:10  warning  'redirect' is defined but never used  @typescript-eslint/no-unused-vars
+
+C:\Users\Uživatel\Desktop\Motko\meeting-notes-app\src\components\meetings\AudioRecorder.tsx
+  4:37  warning  'Play' is defined but never used   @typescript-eslint/no-unused-vars
+  4:43  warning  'Pause' is defined but never used  @typescript-eslint/no-unused-vars
+
+C:\Users\Uživatel\Desktop\Motko\meeting-notes-app\src\components\meetings\ExportButtons.tsx
+   4:10  warning  'Download' is defined but never used                                                                                 @typescript-eslint/no-unused-vars
+   5:1   error    Use "@ts-expect-error" instead of "@ts-ignore", as "@ts-ignore" will do nothing if the following line is error-free  @typescript-eslint/ban-ts-comment
+   7:1   error    Use "@ts-expect-error" instead of "@ts-ignore", as "@ts-ignore" will do nothing if the following line is error-free  @typescript-eslint/ban-ts-comment
+  32:9   error    Use "@ts-expect-error" instead of "@ts-ignore", as "@ts-ignore" will do nothing if the following line is error-free  @typescript-eslint/ban-ts-comment
+  66:9   error    Use "@ts-expect-error" instead of "@ts-ignore", as "@ts-ignore" will do nothing if the following line is error-free  @typescript-eslint/ban-ts-comment
+  77:9   error    Use "@ts-expect-error" instead of "@ts-ignore", as "@ts-ignore" will do nothing if the following line is error-free  @typescript-eslint/ban-ts-comment
+
+C:\Users\Uživatel\Desktop\Motko\meeting-notes-app\src\components\ui\OnboardingTutorial.tsx
+    6:28  warning  'Play' is defined but never used                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 @typescript-eslint/no-unused-vars
+   50:11  warning  'hasSpokenRef' is assigned a value but never used                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                @typescript-eslint/no-unused-vars
+   67:21  error    Error: Cannot access variable before it is declared
+
+`speak` is accessed before it is declared, which prevents the earlier access from updating when this value changes over time.
+
+C:\Users\Uživatel\Desktop\Motko\meeting-notes-app\src\components\ui\OnboardingTutorial.tsx:67:21
+  65 |                 // Short delay to allow render and prevent race conditions
+  66 |                 const timer = setTimeout(() => {
+> 67 |                     speak()
+     |                     ^^^^^ `speak` accessed before it is declared
+  68 |                 }, 500)
+  69 |                 return () => clearTimeout(timer)
+  70 |             }
+
+C:\Users\Uživatel\Desktop\Motko\meeting-notes-app\src\components\ui\OnboardingTutorial.tsx:95:5
+   93 |     }, [currentStep, isVisible, isMuted])
+   94 |
+>  95 |     const speak = () => {
+      |     ^^^^^^^^^^^^^^^^^^^^^
+>  96 |         if (typeof window === 'undefined') return
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+>  97 |
+      …
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 146 |         }
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 147 |     }
+      | ^^^^^^ `speak` is declared here
+  148 |
+  149 |     const handleNext = async () => {
+  150 |         if (currentStep < STEPS.length - 1) {  react-hooks/immutability
+   93:8   warning  React Hook useEffect has a missing dependency: 'speak'. Either include it or remove the dependency array                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         react-hooks/exhaustive-deps
+  166:18  warning  'e' is defined but never used                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    @typescript-eslint/no-unused-vars
+  191:29  warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          @next/next/no-img-element
+
+C:\Users\Uživatel\Desktop\Motko\meeting-notes-app\src\scripts\backfill-profiles.ts
+  49:39  warning  'fetchError' is assigned a value but never used  @typescript-eslint/no-unused-vars
+
+C:\Users\Uživatel\Desktop\Motko\meeting-notes-app\src\utils\supabase\middleware.ts
+  19:58  warning  'options' is defined but never used  @typescript-eslint/no-unused-vars
+
+✖ 35 problems (14 errors, 21 warnings)
+  1 error and 0 warnings potentially fixable with the `--fix` option.
+
