@@ -4,7 +4,7 @@ import { createClient } from '@/utils/supabase/server'
 import { redirect } from 'next/navigation'
 import { revalidatePath } from 'next/cache'
 
-export async function importMeetings(formData: FormData) {
+export async function importMeetings(_prevState: any, formData: FormData) {
     let redirectPath = '/dashboard?message=Hotovo'
     let successCount = 0
     let errors = []
