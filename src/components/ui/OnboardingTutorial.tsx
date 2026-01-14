@@ -54,11 +54,20 @@ export default function OnboardingTutorial({ userId }: OnboardingTutorialProps) 
     }, [])
 
     useEffect(() => {
-        if (isVisible && !isMuted) {
-            speak()
+        try {
+            if (isVisible && !isMuted) {
+                // Short delay to allow render and prevent race conditions
+                const timer = setTimeout(() => {
+                    speak()
+                }, 500)
+                return () => clearTimeout(timer)
+            }
+        } catch (err) {
+            console.error('Tutorial Effect Error:', err)
         }
+
         return () => {
-            if (typeof window !== 'undefined') {
+            if (typeof window !== 'undefined' && window.speechSynthesis) {
                 window.speechSynthesis.cancel()
             }
         }
