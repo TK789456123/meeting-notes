@@ -232,6 +232,86 @@
 }
 
 
+
+.dangerZone {
+    background: rgba(229, 62, 62, 0.05);
+    border: 1px solid rgba(229, 62, 62, 0.1);
+    border-radius: 12px;
+    padding: 1rem;
+}
+
+[data-theme='dark'] .dangerZone {
+    background: rgba(229, 62, 62, 0.1);
+    border-color: rgba(229, 62, 62, 0.2);
+}
+
+.dangerText {
+    font-size: 0.85rem;
+    color: #e53e3e;
+    margin-bottom: 1rem;
+    line-height: 1.4;
+}
+
+.deleteButton {
+    width: 100%;
+    padding: 0.8rem;
+    background: white;
+    color: #e53e3e;
+    border: 1px solid #e53e3e;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.deleteButton:hover {
+    background: #e53e3e;
+    color: white;
+}
+
+[data-theme='dark'] .deleteButton {
+    background: transparent;
+}
+
+[data-theme='dark'] .deleteButton:hover {
+    background: #e53e3e;
+}
+
+.confirmRow {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.cancelDeleteButton {
+    flex: 1;
+    padding: 0.8rem;
+    background: #edf2f7;
+    color: #4a5568;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.cancelDeleteButton:hover {
+    background: #e2e8f0;
+}
+
+.confirmDeleteButton {
+    flex: 1;
+    padding: 0.8rem;
+    background: #e53e3e;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.confirmDeleteButton:hover {
+    background: #c53030;
+}
+
 @keyframes fadeIn {
     from {
         opacity: 0;

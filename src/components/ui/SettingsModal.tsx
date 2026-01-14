@@ -1,9 +1,11 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+import { useRouter } from 'next/navigation'
 import { X, Moon, Sun, Globe, MessageSquare } from 'lucide-react'
 import { useTheme } from 'next-themes'
 import { ThemeToggle } from './theme-toggle'
+import { deleteAccount } from '@/components/layout/actions'
 import styles from './settings-modal.module.css'
 
 interface SettingsModalProps {
@@ -20,7 +22,27 @@ declare global {
 
 export default function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
     const [mounted, setMounted] = useState(false)
+    const [showDeleteConfirm, setShowDeleteConfirm] = useState(false)
+    const [isDeleting, setIsDeleting] = useState(false)
     const { theme } = useTheme()
+    const router = useRouter()
+
+    const handleDeleteAccount = async () => {
+        setIsDeleting(true)
+        try {
+            const result = await deleteAccount()
+            if (result.success) {
+                router.push('/goodbye') // Or login
+            } else {
+                alert(result.message || 'Chyba při mazání účtu')
+                setIsDeleting(false)
+            }
+        } catch (error) {
+            console.error(error)
+            alert('Chyba při mazání účtu')
+            setIsDeleting(false)
+        }
+    }
 
     useEffect(() => {
         setMounted(true)
@@ -110,6 +132,39 @@ export default function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
                             Verze
                         </div>
                         <span style={{ fontWeight: 600 }}>1.2.0</span>
+                    </div>
+                </div>
+
+                <div className={styles.section}>
+                    <h3 className={styles.sectionTitle} style={{ color: '#e53e3e' }}>Nebezpečná zóna</h3>
+                    <div className={styles.dangerZone}>
+                        <p className={styles.dangerText}>
+                            Smazání účtu je nevratné. Přijdete o všechna data.
+                        </p>
+                        {!showDeleteConfirm ? (
+                            <button
+                                className={styles.deleteButton}
+                                onClick={() => setShowDeleteConfirm(true)}
+                            >
+                                Smazat účet
+                            </button>
+                        ) : (
+                            <div className={styles.confirmRow}>
+                                <button
+                                    className={styles.cancelDeleteButton}
+                                    onClick={() => setShowDeleteConfirm(false)}
+                                >
+                                    Zrušit
+                                </button>
+                                <button
+                                    className={styles.confirmDeleteButton}
+                                    onClick={handleDeleteAccount}
+                                    disabled={isDeleting}
+                                >
+                                    {isDeleting ? 'Mažu...' : 'Opravdu smazat'}
+                                </button>
+                            </div>
+                        )}
                     </div>
                 </div>
 

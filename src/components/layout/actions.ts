@@ -59,3 +59,25 @@ export async function uploadAvatar(formData: FormData) {
     revalidatePath('/', 'layout')
     return { success: true, message: 'Profilový obrázek byl změněn', avatarUrl: urlWithTimestamp }
 }
+
+import { createAdminClient } from '@/utils/supabase/server'
+import { redirect } from 'next/navigation'
+
+export async function deleteAccount() {
+    const supabase = await createClient()
+    const { data: { user }, error: userError } = await supabase.auth.getUser()
+
+    if (userError || !user) {
+        return { success: false, message: 'Uživatel není přihlášen' }
+    }
+
+    const adminSupabase = await createAdminClient()
+    const { error: deleteError } = await adminSupabase.auth.admin.deleteUser(user.id)
+
+    if (deleteError) {
+        console.error('Delete account error:', deleteError)
+        return { success: false, message: 'Chyba při mazání účtu' }
+    }
+
+    return { success: true }
+}
