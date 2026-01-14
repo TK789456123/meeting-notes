@@ -13,12 +13,12 @@ interface SettingsModalProps {
     onClose: () => void
 }
 
-declare global {
-    interface Window {
-        google: any;
-        googleTranslateElementInit: any;
-    }
-}
+// declare global {
+//     interface Window {
+//         google: any;
+//         googleTranslateElementInit: any;
+//     }
+// }
 
 export default function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
     const [mounted, setMounted] = useState(false)
@@ -57,7 +57,7 @@ export default function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
 
     return (
         <div className={styles.overlay} onClick={onClose}>
-            <div className={styles.modal} onClick={e => e.stopPropagation()}>
+            <div className={styles.modal} onClick={(e: React.MouseEvent) => e.stopPropagation()}>
                 <div className={styles.header}>
                     <h2 className={styles.title}>Nastavení</h2>
                     <button className={styles.closeButton} onClick={onClose}>
