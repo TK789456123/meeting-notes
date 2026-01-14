@@ -83,7 +83,10 @@ export default async function DashboardPage(props: {
                                         color: meeting.color || '#667eea'
                                     }}
                                 >
-                                    {new Date(meeting.date).toLocaleDateString('cs-CZ')}
+                                    {(() => {
+                                        const d = new Date(meeting.date);
+                                        return isNaN(d.getTime()) ? 'Neplatné datum' : d.toLocaleDateString('cs-CZ');
+                                    })()}
                                 </span>
                             </div>
                             <h3 className={styles.cardTitle}>{meeting.title}</h3>
