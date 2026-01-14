@@ -48,53 +48,8 @@ export default function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
         setMounted(true)
 
         if (isOpen) {
-            const initGoogleTranslate = () => {
-                // TEMPORARILY DISABLED TO DEUBG CRASH
-                /*
-                try {
-                    const element = document.getElementById('google_translate_element')
-                    if (element && !element.children.length && 
-                        window.google && 
-                        window.google.translate && 
-                        window.google.translate.TranslateElement) {
-                        
-                        new window.google.translate.TranslateElement(
-                            {
-                                pageLanguage: 'cs',
-                                autoDisplay: false
-                            },
-                            'google_translate_element'
-                        )
-                    }
-                } catch (e) {
-                    console.error('Google Translate Init Error:', e)
-                }
-                */
-            }
-
-            window.googleTranslateElementInit = initGoogleTranslate
-
-            const scriptId = 'google-translate-script'
-            if (!document.getElementById(scriptId)) {
-                const script = document.createElement('script')
-                script.id = scriptId
-                script.src = '//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit'
-                script.async = true
-                document.body.appendChild(script)
-            }
-
-            // Aggressive polling to ensure initialization happens
-            // This is necessary because the script connection can be flaky in SPAs
-            const intervalId = setInterval(initGoogleTranslate, 500)
-
-            // Allow up to 5 seconds for the widget to load
-            const timeoutId = setTimeout(() => clearInterval(intervalId), 5000)
-
-            return () => {
-                clearInterval(intervalId)
-                clearTimeout(timeoutId)
-                // We don't remove the script to avoid reloading it unnecessarily
-            }
+            console.log("Settings modal open")
+            // Google Translate disabled for stability
         }
     }, [isOpen])
 
