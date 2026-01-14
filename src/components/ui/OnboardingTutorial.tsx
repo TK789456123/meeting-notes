@@ -95,50 +95,55 @@ export default function OnboardingTutorial({ userId }: OnboardingTutorialProps) 
     const speak = () => {
         if (typeof window === 'undefined') return
 
-        const text = descriptionRef.current?.innerText || STEPS[currentStep].description
-        if (!text) return
+        try {
+            if (!STEPS[currentStep]) return
+            const text = descriptionRef.current?.innerText || STEPS[currentStep].description
+            if (!text) return
 
-        window.speechSynthesis.cancel() // Stop previous
-        const utterance = new SpeechSynthesisUtterance(text)
+            window.speechSynthesis.cancel() // Stop previous
+            const utterance = new SpeechSynthesisUtterance(text)
 
-        // Dynamically detect language based on HTML lang attribute (set by Google Translate)
-        const currentLang = document.documentElement.lang || 'cs'
-        utterance.lang = currentLang
+            // Dynamically detect language based on HTML lang attribute (set by Google Translate)
+            const currentLang = document.documentElement.lang || 'cs'
+            utterance.lang = currentLang
 
-        const voices = window.speechSynthesis.getVoices()
+            const voices = window.speechSynthesis.getVoices()
 
-        // Improve voice selection based on current language
-        let selectedVoice: SpeechSynthesisVoice | undefined
+            // Improve voice selection based on current language
+            let selectedVoice: SpeechSynthesisVoice | undefined
 
-        // precision matching for language
-        const langVoices = voices.filter(v => v.lang.startsWith(currentLang))
+            // precision matching for language
+            const langVoices = voices.filter(v => v.lang.startsWith(currentLang))
 
-        // Try to find a female voice in the correct language
-        selectedVoice = langVoices.find(v =>
-            v.name.includes('Zuzana') ||
-            v.name.includes('Vlasta') ||
-            v.name.includes('Google') ||
-            v.name.includes('Female') ||
-            v.name.includes('Samantha')
-        )
+            // Try to find a female voice in the correct language
+            selectedVoice = langVoices.find(v =>
+                v.name.includes('Zuzana') ||
+                v.name.includes('Vlasta') ||
+                v.name.includes('Google') ||
+                v.name.includes('Female') ||
+                v.name.includes('Samantha')
+            )
 
-        // Fallback to any voice in that language
-        if (!selectedVoice && langVoices.length > 0) {
-            selectedVoice = langVoices[0]
+            // Fallback to any voice in that language
+            if (!selectedVoice && langVoices.length > 0) {
+                selectedVoice = langVoices[0]
+            }
+
+            // Fallback to Czech if no language specific voice found (and we are in default mode)
+            if (!selectedVoice) {
+                selectedVoice = voices.find(v => v.lang.includes('cs'))
+            }
+
+            if (selectedVoice) {
+                utterance.voice = selectedVoice
+            }
+
+            utterance.rate = 1
+            utterance.pitch = 1.1
+            window.speechSynthesis.speak(utterance)
+        } catch (e) {
+            console.error("Speech synthesis error:", e)
         }
-
-        // Fallback to Czech if no language specific voice found (and we are in default mode)
-        if (!selectedVoice) {
-            selectedVoice = voices.find(v => v.lang.includes('cs'))
-        }
-
-        if (selectedVoice) {
-            utterance.voice = selectedVoice
-        }
-
-        utterance.rate = 1
-        utterance.pitch = 1.1
-        window.speechSynthesis.speak(utterance)
     }
 
     const handleNext = async () => {
@@ -166,6 +171,7 @@ export default function OnboardingTutorial({ userId }: OnboardingTutorialProps) 
     if (!mounted) return null
 
     const step = STEPS[currentStep]
+    if (!step) return null // Safety check
 
     return (
         <>

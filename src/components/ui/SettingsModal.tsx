@@ -49,15 +49,23 @@ export default function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
 
         if (isOpen) {
             const initGoogleTranslate = () => {
-                const element = document.getElementById('google_translate_element')
-                if (element && !element.children.length && window.google?.translate?.TranslateElement) {
-                    new window.google.translate.TranslateElement(
-                        {
-                            pageLanguage: 'cs',
-                            autoDisplay: false
-                        },
-                        'google_translate_element'
-                    )
+                try {
+                    const element = document.getElementById('google_translate_element')
+                    if (element && !element.children.length &&
+                        window.google &&
+                        window.google.translate &&
+                        window.google.translate.TranslateElement) {
+
+                        new window.google.translate.TranslateElement(
+                            {
+                                pageLanguage: 'cs',
+                                autoDisplay: false
+                            },
+                            'google_translate_element'
+                        )
+                    }
+                } catch (e) {
+                    console.error('Google Translate Init Error:', e)
                 }
             }
 
