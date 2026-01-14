@@ -4,10 +4,14 @@ import { createClient } from '@/utils/supabase/server'
 import { redirect } from 'next/navigation'
 import { revalidatePath } from 'next/cache'
 
-export async function importMeetings(_prevState: any, formData: FormData) {
-    let redirectPath = '/dashboard?message=Hotovo'
+export interface ImportState {
+    success: boolean
+    message: string
+}
+
+export async function importMeetings(_prevState: ImportState, formData: FormData): Promise<ImportState> {
     let successCount = 0
-    let errors = []
+    let errors: string[] = []
 
     try {
         const file = formData.get('file') as File
