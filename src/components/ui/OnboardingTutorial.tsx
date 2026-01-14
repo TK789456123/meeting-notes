@@ -105,22 +105,9 @@ export default function OnboardingTutorial({ userId }: OnboardingTutorialProps) 
         <>
             <button
                 onClick={() => setIsVisible(true)}
-                style={{
-                    position: 'fixed',
-                    bottom: '20px',
-                    right: '20px',
-                    zIndex: 50,
-                    padding: '10px 20px',
-                    background: 'white',
-                    borderRadius: '50px',
-                    boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
-                    border: '1px solid #e2e8f0',
-                    fontWeight: 600,
-                    color: '#667eea',
-                    cursor: 'pointer'
-                }}
+                className={styles.triggerButton}
             >
-                Spustit průvodce 🎓
+                Průvodce 🎓
             </button>
 
             {isVisible && (
