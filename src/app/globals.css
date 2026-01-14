@@ -48,7 +48,34 @@ body {
   box-sizing: border-box;
 }
 
-a {
-  color: inherit;
-  text-decoration: none;
+color: inherit;
+text-decoration: none;
+}
+
+/* Google Translate Overrides */
+/* Hide the top bar */
+.goog-te-banner-frame.skiptranslate {
+  display: none !important;
+}
+
+body {
+  top: 0px !important;
+}
+
+/* Hide the Google icon in the dropdown trigger if desired for cleaner look */
+.goog-te-gadget-icon {
+  display: none !important;
+}
+
+/* Remove the simple view link */
+.goog-te-gadget-simple {
+  background-color: transparent !important;
+  border: none !important;
+  padding: 0 !important;
+  font-size: 14px !important;
+}
+
+/* Adjust text color in the widget */
+.goog-te-gadget-simple .goog-te-menu-value span {
+  color: var(--text-primary) !important;
 }
