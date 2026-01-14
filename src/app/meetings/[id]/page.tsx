@@ -1,5 +1,5 @@
 
-// FORCE DEPLOY TRIGGER 2
+// FORCE DEPLOY TRIGGER 3
 import { createClient, createAdminClient } from '@/utils/supabase/server'
 import Navbar from '@/components/layout/Navbar'
 import styles from './meeting.module.css'
@@ -8,6 +8,29 @@ import Link from 'next/link'
 import { CheckCircle2, Circle, Calendar, User, Clock, ArrowLeft } from 'lucide-react'
 import { DynamicExportButtons, DynamicShareMeetingButton, DynamicAudioRecorder } from '@/components/meetings/ClientWrappers'
 import AddParticipantForm from '@/components/meetings/AddParticipantForm'
+import Image from 'next/image'
+
+interface Profile {
+    id: string
+    full_name: string | null
+    avatar_url: string | null
+    email: string | null
+}
+
+interface Participant {
+    user_id: string
+    meeting_id: string
+    profiles: Profile | null
+}
+
+interface ActionItem {
+    id: string
+    description: string
+    is_completed: boolean
+    deadline: string | null
+    assignee_id: string | null
+    profiles: { full_name: string | null } | null
+}
 
 export default async function MeetingPage(props: { params: Promise<{ id: string }>, searchParams: Promise<{ error?: string }> }) {
     const params = await props.params
@@ -49,23 +72,25 @@ export default async function MeetingPage(props: { params: Promise<{ id: string 
     }
 
     // 2. Fetch Helper Data (Participants & Tasks) - USE ADMIN CLIENT
-    let participants: any[] = []
-    let actionItems: any[] = []
+    let participants: Participant[] = []
+    let actionItems: ActionItem[] = []
     let organizerName = 'Organizátor';
 
     // Note: 'email' column must be added to profiles table via SQL script
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const { data: pData } = await adminSupabase
         .from('participants')
-        .select('user_id, profiles(id, full_name, avatar_url, email)')
+        .select('user_id, meeting_id, profiles(id, full_name, avatar_url, email)')
         .eq('meeting_id', meetingId)
 
     if (pData) {
         // Enhance participants with data from Auth Admin if Profile data is missing
         // This is a fallback to ensure we ALWAYS show at least an email
-        participants = await Promise.all(pData.map(async (p: any) => {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const enhancedParticipants = await Promise.all(pData.map(async (p: any) => {
             if (!p.profiles?.full_name && !p.profiles?.email) {
                 try {
-                    const { data: { user }, error } = await adminSupabase.auth.admin.getUserById(p.user_id)
+                    const { data: { user } } = await adminSupabase.auth.admin.getUserById(p.user_id)
                     if (user && user.email) {
                         return {
                             ...p,
@@ -81,6 +106,8 @@ export default async function MeetingPage(props: { params: Promise<{ id: string 
             }
             return p
         }))
+        // Cast safely after enhancement
+        participants = enhancedParticipants as Participant[]
     }
 
     const { data: aiData } = await adminSupabase
@@ -88,7 +115,7 @@ export default async function MeetingPage(props: { params: Promise<{ id: string 
         .select('*, profiles:assignee_id(full_name)')
         .eq('meeting_id', meetingId)
         .order('created_at', { ascending: true })
-    if (aiData) actionItems = aiData
+    if (aiData) actionItems = aiData as unknown as ActionItem[]
 
     // 3. Resolve Organizer Name manually (Admin)
     if (meeting.organizer_id) {
@@ -190,9 +217,16 @@ export default async function MeetingPage(props: { params: Promise<{ id: string 
                             <h2 className={styles.sectionTitle}>Účastníci</h2>
                             <div className={styles.peopleList}>
                                 {(!participants || participants.length === 0) && <p className={styles.emptyText}>Zatím žádní účastníci</p>}
-                                {participants?.map((p: any) => (
+                                {participants?.map((p) => (
                                     <div key={p.user_id} className={styles.person}>
-                                        <img src={p.profiles?.avatar_url || `https://ui-avatars.com/api/?name=${p.profiles?.full_name || p.profiles?.email || 'Neznámý'}`} alt="" className={styles.avatar} />
+                                        <Image
+                                            src={p.profiles?.avatar_url || `https://ui-avatars.com/api/?name=${p.profiles?.full_name || p.profiles?.email || 'Neznámý'}`}
+                                            alt=""
+                                            className={styles.avatar}
+                                            width={32}
+                                            height={32}
+                                            unoptimized
+                                        />
                                         <span>{p.profiles?.full_name || p.profiles?.email || 'Neznámý uživatel'}</span>
                                     </div>
                                 ))}
@@ -230,7 +264,7 @@ export default async function MeetingPage(props: { params: Promise<{ id: string 
                                         <label className={styles.labelSmall}>Komu:</label>
                                         <select name="assignee_id">
                                             <option value="">-- Vyberte --</option>
-                                            {participants?.map((p: any) => (
+                                            {participants?.map((p) => (
                                                 <option key={p.user_id} value={p.user_id}>{p.profiles?.full_name || 'Neznámý uživatel'}</option>
                                             ))}
                                         </select>
