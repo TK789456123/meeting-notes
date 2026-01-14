@@ -48,8 +48,9 @@ body {
   box-sizing: border-box;
 }
 
-color: inherit;
-text-decoration: none;
+a {
+  color: inherit;
+  text-decoration: none;
 }
 
 /* Google Translate Overrides */
