@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useRef } from 'react'
+import { useRouter } from 'next/navigation'
 import { uploadAvatar } from './actions'
 import styles from './AvatarUploadModal.module.css'
 import { X, Upload, Image as ImageIcon } from 'lucide-react'
@@ -17,6 +18,7 @@ export default function AvatarUploadModal({ isOpen, onClose, currentAvatarUrl, e
     const [previewUrl, setPreviewUrl] = useState<string | null>(null)
     const [selectedFile, setSelectedFile] = useState<File | null>(null)
     const fileInputRef = useRef<HTMLInputElement>(null)
+    const router = useRouter()
 
     if (!isOpen) return null
 
@@ -38,9 +40,8 @@ export default function AvatarUploadModal({ isOpen, onClose, currentAvatarUrl, e
         try {
             const result = await uploadAvatar(formData)
             if (result.success) {
+                router.refresh() // Force server components to re-fetch
                 onClose()
-                // Force reload or state update handled by server action revalidate
-                // But for better UX might want to notify parent
             } else {
                 alert(result.message)
             }
