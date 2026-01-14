@@ -55,7 +55,7 @@ export default function OnboardingTutorial({ userId }: OnboardingTutorialProps) 
 
     useEffect(() => {
         if (isVisible && !isMuted) {
-            speak(STEPS[currentStep].description)
+            speak()
         }
         return () => {
             if (typeof window !== 'undefined') {
