@@ -44,8 +44,12 @@ export async function uploadAvatar(formData: FormData) {
 
     const { error: updateError } = await supabase
         .from('profiles')
-        .update({ avatar_url: urlWithTimestamp })
-        .eq('id', user.id)
+        .upsert({
+            id: user.id,
+            avatar_url: urlWithTimestamp,
+            updated_at: new Date().toISOString()
+        })
+        .select()
 
     if (updateError) {
         console.error('Profile update error:', updateError)

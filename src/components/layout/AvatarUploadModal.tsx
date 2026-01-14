@@ -40,8 +40,9 @@ export default function AvatarUploadModal({ isOpen, onClose, currentAvatarUrl, e
         try {
             const result = await uploadAvatar(formData)
             if (result.success) {
-                router.refresh() // Force server components to re-fetch
-                onClose()
+                // Hard reload to force browser to drop image cache and fetch new prop
+                window.location.reload()
+                // onClose() will happen naturally as page reloads
             } else {
                 alert(result.message)
             }
