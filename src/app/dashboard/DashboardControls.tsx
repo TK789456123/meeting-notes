@@ -12,7 +12,7 @@ interface DashboardControlsProps {
 export default function DashboardControls({ userId }: DashboardControlsProps) {
     return (
         <div className={styles.headerButtons}>
-            {/* {userId && <OnboardingTutorial userId={userId} />} */}
+            {userId && <OnboardingTutorial userId={userId} />}
 
             <Link href="/import" className={styles.secondaryButton}>
                 Importovat (TXT)
