@@ -1,8 +1,9 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import styles from './onboarding-tutorial.module.css'
 import { completeTutorial } from '@/app/dashboard/actions'
+import { Volume2, VolumeX, Play } from 'lucide-react'
 
 interface OnboardingTutorialProps {
     userId: string
@@ -10,34 +11,29 @@ interface OnboardingTutorialProps {
 
 const STEPS = [
     {
-        title: "Vítejte v MeetingNotes! 👋",
-        description: "Rád bych tě provedl rychlou prohlídkou, abys věděl, co všechno tahle aplikace umí.",
-        icon: "🚀"
+        title: "Vítejte!",
+        description: "Ahoj! Jsem tvoje průvodkyně. Rád bych tě provedla rychlou prohlídkou, abys věděl, co všechno tahle aplikace umí.",
+        icon: "👋"
     },
     {
-        title: "Vše na jednom místě",
-        description: "Tady na Dashboardu uvidíš všechny své naplánované schůzky. Můžeš je filtrovat pomocí lupy nahoře.",
+        title: "Dashboard",
+        description: "Tady na Dashboardu uvidíš všechny své naplánované schůzky. Je to tvůj hlavní přehled.",
         icon: "📊"
     },
     {
-        title: "Plánování nových schůzek",
-        description: "Tlačítkem '+ Nová schůzka' vytvoříš záznam. Můžeš přidat agendu, pozvat lidi a nastavit čas.",
+        title: "Nová schůzka",
+        description: "Tlačítkem '+ Nová schůzka' vytvoříš záznam. Můžeš přidat agendu a pozvat kolegy.",
         icon: "📅"
     },
     {
-        title: "Barvičky a Exporty",
-        description: "V detailu schůzky si můžeš měnit barvu štítků, stahovat zápis do PDF nebo si ho uložit do kalendáře.",
-        icon: "🎨"
+        title: "Exporty",
+        description: "Zápisy si můžeš uložit do PDF nebo přímo do kalendáře. Vše na jedno kliknutí.",
+        icon: "💾"
     },
     {
-        title: "Nastavení a Jazyky 🌍",
-        description: "Pod ozubeným kolečkem najdeš přepínání tmavého režimu a Google překladač, který umí přeložit aplikaci do všech jazyků světa.",
-        icon: "⚙️"
-    },
-    {
-        title: "To je vše!",
-        description: "Užij si plánování. Kdyby něco, roboti jsou tu, aby pomohli! 🤖",
-        icon: "✨"
+        title: "Jdeme na to?",
+        description: "To je pro začátek vše. Kdyby něco, jsem tu! Užij si práci.",
+        icon: "🚀"
     }
 ]
 
@@ -45,10 +41,39 @@ export default function OnboardingTutorial({ userId }: OnboardingTutorialProps) 
     const [currentStep, setCurrentStep] = useState(0)
     const [isVisible, setIsVisible] = useState(false)
     const [mounted, setMounted] = useState(false)
+    const [isMuted, setIsMuted] = useState(false)
+    const hasSpokenRef = useRef<boolean>(false)
 
     useEffect(() => {
         setMounted(true)
+        // Check if previously seen
+        const seen = localStorage.getItem('meeting_notes_tutorial_seen')
+        if (!seen) {
+            setIsVisible(true)
+        }
     }, [])
+
+    useEffect(() => {
+        if (isVisible && !isMuted) {
+            speak(STEPS[currentStep].description)
+        }
+        return () => {
+            if (typeof window !== 'undefined') {
+                window.speechSynthesis.cancel()
+            }
+        }
+    }, [currentStep, isVisible, isMuted])
+
+    const speak = (text: string) => {
+        if (typeof window === 'undefined') return
+
+        window.speechSynthesis.cancel() // Stop previous
+        const utterance = new SpeechSynthesisUtterance(text)
+        utterance.lang = 'cs-CZ'
+        utterance.rate = 1
+        utterance.pitch = 1
+        window.speechSynthesis.speak(utterance)
+    }
 
     const handleNext = async () => {
         if (currentStep < STEPS.length - 1) {
@@ -59,8 +84,11 @@ export default function OnboardingTutorial({ userId }: OnboardingTutorialProps) 
     }
 
     const finishTutorial = async () => {
+        if (typeof window !== 'undefined') {
+            window.speechSynthesis.cancel()
+        }
         setIsVisible(false)
-        setCurrentStep(0) // Reset for next time
+        setCurrentStep(0)
         localStorage.setItem('meeting_notes_tutorial_seen', 'true')
         try {
             await completeTutorial(userId)
@@ -77,39 +105,89 @@ export default function OnboardingTutorial({ userId }: OnboardingTutorialProps) 
         <>
             <button
                 onClick={() => setIsVisible(true)}
-                className={styles.triggerButton}
+                style={{
+                    position: 'fixed',
+                    bottom: '20px',
+                    right: '20px',
+                    zIndex: 50,
+                    padding: '10px 20px',
+                    background: 'white',
+                    borderRadius: '50px',
+                    boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
+                    border: '1px solid #e2e8f0',
+                    fontWeight: 600,
+                    color: '#667eea',
+                    cursor: 'pointer'
+                }}
             >
-                Průvodce
+                Spustit průvodce 🎓
             </button>
 
             {isVisible && (
                 <div className={styles.overlay}>
                     <div className={styles.modal}>
 
-                        <span className={styles.stepImage} role="img" aria-label="icon">
-                            {step.icon}
-                        </span>
-
-                        <h2 className={styles.title}>{step.title}</h2>
-                        <p className={styles.description}>{step.description}</p>
-
-                        <div className={styles.dots}>
-                            {STEPS.map((_, index) => (
-                                <div
-                                    key={index}
-                                    className={`${styles.dot} ${index === currentStep ? styles.activeDot : ''}`}
-                                />
-                            ))}
+                        {/* Character Section */}
+                        <div className={styles.characterContainer}>
+                            <img
+                                src="/guide-character.png"
+                                alt="Průvodce"
+                                className={styles.characterImage}
+                            />
                         </div>
 
-                        <div className={styles.footer}>
-                            <button onClick={finishTutorial} className={styles.skipButton}>
-                                {currentStep === STEPS.length - 1 ? '' : 'Přeskočit'}
-                            </button>
-                            <button onClick={handleNext} className={styles.nextButton}>
-                                {currentStep === STEPS.length - 1 ? 'Začít!' : 'Pokračovat'}
-                            </button>
+                        {/* Speech Bubble Section */}
+                        <div className={styles.speechBubble}>
+                            <div className={styles.title}>
+                                <span>{step.icon}</span>
+                                {step.title}
+                                <button
+                                    onClick={() => {
+                                        if (isMuted) {
+                                            setIsMuted(false)
+                                            // speak will trigger via effect
+                                        } else {
+                                            setIsMuted(true)
+                                            window.speechSynthesis.cancel()
+                                        }
+                                    }}
+                                    style={{
+                                        marginLeft: 'auto',
+                                        background: 'none',
+                                        border: 'none',
+                                        cursor: 'pointer',
+                                        color: '#cbd5e0'
+                                    }}
+                                >
+                                    {isMuted ? <VolumeX size={20} /> : <Volume2 size={20} />}
+                                </button>
+                            </div>
+
+                            <p className={styles.description}>
+                                {step.description}
+                            </p>
+
+                            <div className={styles.controls}>
+                                <div className={styles.dots}>
+                                    {STEPS.map((_, index) => (
+                                        <div
+                                            key={index}
+                                            className={`${styles.dot} ${index === currentStep ? styles.activeDot : ''}`}
+                                        />
+                                    ))}
+                                </div>
+
+                                <div className={styles.buttons}>
+                                    <button onClick={finishTutorial} className={styles.skipButton}>
+                                        {currentStep === STEPS.length - 1 ? '' : 'Přeskočit'}
+                                    </button>
+                                    <button onClick={handleNext} className={styles.nextButton}>
+                                        {currentStep === STEPS.length - 1 ? 'Začít!' : 'Pokračovat'}
+                                    </button>
+                                </div>
+                            </div>
                         </div>
+
                     </div>
                 </div>
             )}

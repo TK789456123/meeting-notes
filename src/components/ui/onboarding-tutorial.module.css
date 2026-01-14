@@ -4,8 +4,8 @@
     left: 0;
     width: 100vw;
     height: 100vh;
-    background: rgba(0, 0, 0, 0.4);
-    backdrop-filter: blur(5px);
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(8px);
     z-index: 1000;
     display: flex;
     justify-content: center;
@@ -14,47 +14,87 @@
 }
 
 .modal {
-    background: white;
-    padding: 2.5rem;
-    border-radius: 24px;
     width: 90%;
-    max-width: 500px;
-    text-align: center;
-    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
-    animation: slideUp 0.3s ease;
+    max-width: 800px;
+    display: flex;
+    align-items: flex-end;
+    gap: 2rem;
+    position: relative;
 }
 
-.stepImage {
-    font-size: 4rem;
-    display: block;
-    margin-bottom: 1.5rem;
-    animation: bounce 2s infinite;
+.characterContainer {
+    width: 250px;
+    flex-shrink: 0;
+    animation: slideUp 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.characterImage {
+    width: 100%;
+    height: auto;
+    filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.3));
+}
+
+.speechBubble {
+    background: white;
+    padding: 2.5rem;
+    border-radius: 30px;
+    border-bottom-left-radius: 0;
+    /* Tail origin */
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+    position: relative;
+    flex-grow: 1;
+    animation: popIn 0.4s 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275) both;
+    margin-bottom: 2rem;
+    /* Align clear of bottom */
+}
+
+/* Speech Bubble Tail */
+.speechBubble::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: -20px;
+    width: 0;
+    height: 0;
+    border: 20px solid transparent;
+    border-right-color: white;
+    border-bottom: 0;
+    border-left: 0;
+    margin-bottom: 0;
 }
 
 .title {
     font-size: 1.8rem;
     font-weight: 800;
     color: #1a202c;
-    margin-bottom: 0.5rem;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
 }
 
 .description {
-    font-size: 1.1rem;
+    font-size: 1.2rem;
     color: #4a5568;
     line-height: 1.6;
     margin-bottom: 2rem;
 }
 
+.controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 1rem;
+}
+
 .dots {
     display: flex;
-    justify-content: center;
     gap: 0.5rem;
-    margin-bottom: 2rem;
 }
 
 .dot {
-    width: 8px;
-    height: 8px;
+    width: 10px;
+    height: 10px;
     border-radius: 50%;
     background: #e2e8f0;
     transition: all 0.3s ease;
@@ -62,15 +102,13 @@
 
 .activeDot {
     background: #667eea;
-    width: 24px;
-    border-radius: 4px;
+    width: 30px;
+    border-radius: 5px;
 }
 
-.footer {
+.buttons {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-top: 1rem;
+    gap: 1rem;
 }
 
 .skipButton {
@@ -101,6 +139,9 @@
     cursor: pointer;
     box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
     transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
 }
 
 .nextButton:hover {
@@ -109,25 +150,11 @@
 }
 
 .triggerButton {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    padding: 0.8rem 1.5rem;
-    background: white;
-    color: #667eea;
-    border: 2px solid #667eea;
-    border-radius: 12px;
-    font-weight: 600;
-    transition: all 0.2s ease;
-    cursor: pointer;
-    height: fit-content;
+    display: none;
+    /* Auto trigger mostly, or kept hidden for now as per design preference update */
 }
 
-.triggerButton:hover {
-    transform: translateY(-2px);
-    background: #f8f0ff;
-}
-
+/* Animations */
 @keyframes fadeIn {
     from {
         opacity: 0;
@@ -140,24 +167,57 @@
 
 @keyframes slideUp {
     from {
+        transform: translateY(100px);
         opacity: 0;
-        transform: translateY(20px);
     }
 
     to {
-        opacity: 1;
         transform: translateY(0);
+        opacity: 1;
     }
 }
 
-@keyframes bounce {
-
-    0%,
-    100% {
-        transform: translateY(0);
+@keyframes popIn {
+    from {
+        transform: scale(0.8);
+        opacity: 0;
     }
 
-    50% {
-        transform: translateY(-10px);
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+    .modal {
+        flex-direction: column;
+        align-items: center;
+        gap: 1rem;
+    }
+
+    .characterContainer {
+        width: 150px;
+        order: -1;
+        /* Character on top */
+    }
+
+    .speechBubble {
+        border-bottom-left-radius: 30px;
+        /* Reset */
+        border-top-left-radius: 0;
+        /* Tail on top? Or keep simple */
+        margin-bottom: 0;
+        width: 100%;
+    }
+
+    .speechBubble::after {
+        /* Move tail to top for mobile vertical layout if character is above */
+        top: -15px;
+        left: 50%;
+        bottom: auto;
+        transform: translateX(-50%) rotate(90deg);
+        border-right-color: white;
     }
 }
