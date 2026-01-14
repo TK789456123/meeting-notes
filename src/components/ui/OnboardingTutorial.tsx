@@ -70,8 +70,20 @@ export default function OnboardingTutorial({ userId }: OnboardingTutorialProps) 
         window.speechSynthesis.cancel() // Stop previous
         const utterance = new SpeechSynthesisUtterance(text)
         utterance.lang = 'cs-CZ'
+
+        // Try to find a female Czech voice
+        const voices = window.speechSynthesis.getVoices()
+        const femaleVoice = voices.find(v =>
+            v.lang.includes('cs') &&
+            (v.name.includes('Zuzana') || v.name.includes('Vlasta') || v.name.includes('Google') || v.name.includes('Female'))
+        ) || voices.find(v => v.lang.includes('cs'))
+
+        if (femaleVoice) {
+            utterance.voice = femaleVoice
+        }
+
         utterance.rate = 1
-        utterance.pitch = 1
+        utterance.pitch = 1.1 // Slightly higher pitch for female character
         window.speechSynthesis.speak(utterance)
     }
 
