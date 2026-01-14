@@ -54,8 +54,12 @@ text-decoration: none;
 
 /* Google Translate Overrides */
 /* Hide the top bar */
-.goog-te-banner-frame.skiptranslate {
+.goog-te-banner-frame.skiptranslate,
+.goog-te-banner-frame,
+iframe.goog-te-banner-frame {
   display: none !important;
+  visibility: hidden !important;
+  height: 0 !important;
 }
 
 body {

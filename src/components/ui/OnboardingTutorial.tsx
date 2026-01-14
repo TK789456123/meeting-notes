@@ -87,26 +87,52 @@ export default function OnboardingTutorial({ userId }: OnboardingTutorialProps) 
         }
     }, [currentStep, isVisible, isMuted])
 
-    const speak = (text: string) => {
+    const speak = () => {
         if (typeof window === 'undefined') return
+
+        const text = descriptionRef.current?.innerText || STEPS[currentStep].description
+        if (!text) return
 
         window.speechSynthesis.cancel() // Stop previous
         const utterance = new SpeechSynthesisUtterance(text)
-        utterance.lang = 'cs-CZ'
 
-        // Try to find a female Czech voice
+        // Dynamically detect language based on HTML lang attribute (set by Google Translate)
+        const currentLang = document.documentElement.lang || 'cs'
+        utterance.lang = currentLang
+
         const voices = window.speechSynthesis.getVoices()
-        const femaleVoice = voices.find(v =>
-            v.lang.includes('cs') &&
-            (v.name.includes('Zuzana') || v.name.includes('Vlasta') || v.name.includes('Google') || v.name.includes('Female'))
-        ) || voices.find(v => v.lang.includes('cs'))
 
-        if (femaleVoice) {
-            utterance.voice = femaleVoice
+        // Improve voice selection based on current language
+        let selectedVoice: SpeechSynthesisVoice | undefined
+
+        // precision matching for language
+        const langVoices = voices.filter(v => v.lang.startsWith(currentLang))
+
+        // Try to find a female voice in the correct language
+        selectedVoice = langVoices.find(v =>
+            v.name.includes('Zuzana') ||
+            v.name.includes('Vlasta') ||
+            v.name.includes('Google') ||
+            v.name.includes('Female') ||
+            v.name.includes('Samantha')
+        )
+
+        // Fallback to any voice in that language
+        if (!selectedVoice && langVoices.length > 0) {
+            selectedVoice = langVoices[0]
+        }
+
+        // Fallback to Czech if no language specific voice found (and we are in default mode)
+        if (!selectedVoice) {
+            selectedVoice = voices.find(v => v.lang.includes('cs'))
+        }
+
+        if (selectedVoice) {
+            utterance.voice = selectedVoice
         }
 
         utterance.rate = 1
-        utterance.pitch = 1.1 // Slightly higher pitch for female character
+        utterance.pitch = 1.1
         window.speechSynthesis.speak(utterance)
     }
 
