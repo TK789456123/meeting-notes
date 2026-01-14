@@ -21,7 +21,7 @@ export default async function DashboardPage(props: {
     if (rawMessage) {
         try {
             message = decodeURIComponent(rawMessage).replace(/_/g, ' ');
-        } catch (e) {
+        } catch {
             message = rawMessage.replace(/_/g, ' '); // Fallback to raw if decode fails
         }
     }
