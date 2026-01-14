@@ -15,6 +15,7 @@ export function FlowerBackground() {
             duration: 10 + Math.random() * 20, // Random fall duration (10-30s)
             delay: Math.random() * 10, // Random start delay
         }))
+        // eslint-disable-next-line react-hooks/set-state-in-effect
         setFlowers(newFlowers)
     }, [])
 
