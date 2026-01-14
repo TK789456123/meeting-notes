@@ -150,8 +150,19 @@
 }
 
 .triggerButton {
-    display: none;
-    /* Auto trigger mostly, or kept hidden for now as per design preference update */
+    display: flex;
+    /* Visible */
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.8rem 1.5rem;
+    background: white;
+    color: #667eea;
+    border: 2px solid #667eea;
+    border-radius: 12px;
+    font-weight: 600;
+    transition: all 0.2s ease;
+    cursor: pointer;
+    height: fit-content;
 }
 
 /* Animations */
