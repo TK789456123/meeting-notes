@@ -14,14 +14,28 @@ export default async function DashboardPage(props: {
 }) {
     const searchParams = await props.searchParams;
     const query = searchParams?.query || '';
-    const message = searchParams?.message || '';
+    const rawMessage = searchParams?.message || '';
+
+    // Safe decode function
+    let message = '';
+    if (rawMessage) {
+        try {
+            message = decodeURIComponent(rawMessage).replace(/_/g, ' ');
+        } catch (e) {
+            message = rawMessage.replace(/_/g, ' '); // Fallback to raw if decode fails
+        }
+    }
 
     const supabase = await createClient()
 
-    // Fetch User to check tutorial status
+    // Fetch User to check tutorial status (Restored logic)
     const { data: { user } } = await supabase.auth.getUser()
 
-    // ... (rest of logic)
+    // Check profile
+    if (user) {
+        // We might want to check for 'has_seen_tutorial' here if we were using it server-side,
+        // but currently it seems handled by OnboardingTutorial client-side via localStorage + props.
+    }
 
     let queryBuilder = supabase
         .from('meetings')
@@ -51,11 +65,11 @@ export default async function DashboardPage(props: {
                     padding: '1rem',
                     marginBottom: '1rem',
                     borderRadius: '0.5rem',
-                    backgroundColor: message.startsWith('Chyba') ? '#fed7d7' : '#c6f6d5',
-                    color: message.startsWith('Chyba') ? '#c53030' : '#2f855a',
-                    border: `1px solid ${message.startsWith('Chyba') ? '#feb2b2' : '#9ae6b4'}`
+                    backgroundColor: message.includes('Chyba') || message.includes('Kritická') ? '#fed7d7' : '#c6f6d5',
+                    color: message.includes('Chyba') || message.includes('Kritická') ? '#c53030' : '#2f855a',
+                    border: `1px solid ${message.includes('Chyba') || message.includes('Kritická') ? '#feb2b2' : '#9ae6b4'}`
                 }}>
-                    {decodeURIComponent(message).replace(/_/g, ' ')}
+                    {message}
                 </div>
             )}
 
@@ -72,7 +86,7 @@ export default async function DashboardPage(props: {
                             className={styles.card}
                             style={{
                                 borderColor: meeting.color || 'rgba(255,255,255,0.8)',
-                                background: meeting.color ? `${meeting.color}33` : 'rgba(255, 255, 255, 0.6)' // 33 = ~20% opacity
+                                background: meeting.color ? `${meeting.color}33` : 'rgba(255, 255, 255, 0.6)'
                             }}
                         >
                             <div className={styles.cardHeader}>
