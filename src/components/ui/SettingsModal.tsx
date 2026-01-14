@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState, MouseEvent } from 'react'
 import { useRouter } from 'next/navigation'
 import { X, Moon, Sun, Globe, MessageSquare } from 'lucide-react'
 import { useTheme } from 'next-themes'
@@ -48,7 +48,7 @@ export default function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
         setMounted(true)
 
         if (isOpen) {
-            console.log("Settings modal open")
+            // console.log("Settings modal open")
             // Google Translate disabled for stability
         }
     }, [isOpen])
@@ -57,7 +57,7 @@ export default function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
 
     return (
         <div className={styles.overlay} onClick={onClose}>
-            <div className={styles.modal} onClick={(e: React.MouseEvent) => e.stopPropagation()}>
+            <div className={styles.modal} onClick={(e: MouseEvent) => e.stopPropagation()}>
                 <div className={styles.header}>
                     <h2 className={styles.title}>Nastavení</h2>
                     <button className={styles.closeButton} onClick={onClose}>
