@@ -6,6 +6,7 @@ import styles from './Navbar.module.css'
 import { ThemeToggle } from '../ui/theme-toggle'
 
 import NavbarSettings from './NavbarSettings'
+import UserAvatar from './UserAvatar'
 
 export default async function Navbar() {
     const supabase = await createClient()
@@ -13,6 +14,16 @@ export default async function Navbar() {
     const {
         data: { user },
     } = await supabase.auth.getUser()
+
+    let avatarUrl = null
+    if (user) {
+        const { data: profile } = await supabase
+            .from('profiles')
+            .select('avatar_url')
+            .eq('id', user.id)
+            .single()
+        avatarUrl = profile?.avatar_url
+    }
 
     const signOut = async () => {
         'use server'
@@ -30,6 +41,7 @@ export default async function Navbar() {
                 <NavbarSettings />
                 {user ? (
                     <>
+                        <UserAvatar email={user.email || ''} avatarUrl={avatarUrl} />
                         <span className={styles.email}>{user.email}</span>
                         <form action={signOut}>
                             <button className={styles.button}>Odhlásit</button>
