@@ -1,0 +1,165 @@
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(4px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.modal {
+    background: white;
+    padding: 2rem;
+    border-radius: 20px;
+    width: 90%;
+    max-width: 400px;
+    position: relative;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+    animation: slideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.closeButton {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #a0aec0;
+    padding: 5px;
+    border-radius: 50%;
+    transition: background 0.2s;
+}
+
+.closeButton:hover {
+    background: #f1f2f6;
+    color: #2d3436;
+}
+
+.title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #2d3436;
+    margin: 0;
+}
+
+.previewArea {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    overflow: hidden;
+    position: relative;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    border: 4px solid white;
+}
+
+.previewImage {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.placeholderLarge {
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #a8c0ff 0%, #3f2b96 100%);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 3rem;
+    font-weight: 600;
+}
+
+.actions {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.uploadRow {
+    display: flex;
+    gap: 1rem;
+    width: 100%;
+}
+
+.selectButton,
+.uploadButton,
+.changeButton {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.8rem 1.5rem;
+    border-radius: 12px;
+    border: none;
+    cursor: pointer;
+    font-weight: 600;
+    transition: transform 0.2s;
+    flex: 1;
+}
+
+.selectButton {
+    background: #f1f2f6;
+    color: #2d3436;
+}
+
+.selectButton:hover {
+    background: #dfe4ea;
+}
+
+.uploadButton {
+    background: #6c5ce7;
+    color: white;
+}
+
+.uploadButton:hover {
+    background: #5d4de0;
+    transform: translateY(-2px);
+}
+
+.uploadButton:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.changeButton {
+    background: #f1f2f6;
+    color: #2d3436;
+    flex: 0.5;
+}
+
+:global([data-theme='dark']) .modal {
+    background: #2d3436;
+}
+
+:global([data-theme='dark']) .title {
+    color: white;
+}
+
+:global([data-theme='dark']) .selectButton {
+    background: #4a4a4a;
+    color: white;
+}
