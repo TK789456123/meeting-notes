@@ -58,7 +58,7 @@ export default function OnboardingTutorial({ userId }: OnboardingTutorialProps) 
             if (isVisible && !isMuted) {
                 // Short delay to allow render and prevent race conditions
                 const timer = setTimeout(() => {
-                    speak()
+                    // speak() // Temporarily disabled to debug crash
                 }, 500)
                 return () => clearTimeout(timer)
             }
