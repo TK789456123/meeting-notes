@@ -162,7 +162,7 @@ export default function OnboardingTutorial({ userId }: OnboardingTutorialProps) 
                                 </button>
                             </div>
 
-                            <p className={styles.description}>
+                            <p className={styles.description} ref={descriptionRef}>
                                 {step.description}
                             </p>
 
