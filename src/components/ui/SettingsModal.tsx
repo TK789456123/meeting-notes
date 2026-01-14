@@ -54,8 +54,7 @@ export default function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
                     new window.google.translate.TranslateElement(
                         {
                             pageLanguage: 'cs',
-                            autoDisplay: false,
-                            layout: window.google.translate.TranslateElement.InlineLayout.SIMPLE
+                            autoDisplay: false
                         },
                         'google_translate_element'
                     )

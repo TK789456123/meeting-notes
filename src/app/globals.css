@@ -73,30 +73,19 @@ body {
 }
 
 /* Hide the Google icon in the dropdown trigger if desired for cleaner look */
-/* .goog-te-gadget-icon {
-    display: none !important;
-} */
+.goog-te-gadget-icon {
+  display: none !important;
+}
 
-
-/* Force visibility for the Translate widget */
+/* Remove the simple view link */
 .goog-te-gadget-simple {
-  display: inline-flex !important;
-  visibility: visible !important;
-  opacity: 1 !important;
-  background-color: #f1f5f9 !important;
-  /* Light background to be visible */
-  border: 1px solid #cbd5e0 !important;
-  padding: 8px !important;
-  border-radius: 6px !important;
-  cursor: pointer !important;
+  background-color: transparent !important;
+  border: none !important;
+  padding: 0 !important;
+  font-size: 14px !important;
 }
 
-.goog-te-gadget-simple img {
-  display: inline-block !important;
-  /* Ensure icon is visible if present */
-}
-
-.goog-te-gadget-simple span {
-  color: #1a202c !important;
-  /* Ensure text is dark */
+/* Adjust text color in the widget */
+.goog-te-gadget-simple .goog-te-menu-value span {
+  color: var(--text-primary) !important;
 }
