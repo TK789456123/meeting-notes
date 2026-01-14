@@ -54,17 +54,22 @@ a {
 }
 
 /* Google Translate Overrides */
-/* Hide the top bar */
+/* Hide the top bar - Forcefully */
 .goog-te-banner-frame.skiptranslate,
 .goog-te-banner-frame,
 iframe.goog-te-banner-frame {
   display: none !important;
   visibility: hidden !important;
   height: 0 !important;
+  width: 0 !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+  z-index: -1000 !important;
 }
 
 body {
   top: 0px !important;
+  position: static !important;
 }
 
 /* Hide the Google icon in the dropdown trigger if desired for cleaner look */
