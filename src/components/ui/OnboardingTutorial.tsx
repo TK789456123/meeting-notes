@@ -56,12 +56,25 @@ export default function OnboardingTutorial({ userId }: OnboardingTutorialProps) 
 
     useEffect(() => {
         try {
-            if (isVisible && !isMuted) {
+            const runSpeak = () => {
                 // Short delay to allow render and prevent race conditions
                 const timer = setTimeout(() => {
                     speak()
                 }, 500)
                 return () => clearTimeout(timer)
+            }
+
+            if (isVisible && !isMuted) {
+                runSpeak()
+            }
+
+            // Ensure we retry if voices weren't ready
+            if (typeof window !== 'undefined' && window.speechSynthesis) {
+                window.speechSynthesis.onvoiceschanged = () => {
+                    if (isVisible && !isMuted) {
+                        speak()
+                    }
+                }
             }
         } catch (err) {
             console.error('Tutorial Effect Error:', err)
