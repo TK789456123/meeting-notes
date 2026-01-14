@@ -107,12 +107,12 @@
     font-size: 1.25rem;
     font-weight: 700;
     margin-bottom: auto;
-    color: var(--text-primary);
+    color: var(--page-header-color);
 }
 
 .cardFooter {
     font-size: 0.9rem;
-    color: var(--text-secondary);
+    color: var(--page-subtitle-color);
     margin-top: 1rem;
     text-align: right;
     font-weight: 500;
