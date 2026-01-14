@@ -9,28 +9,19 @@ import DashboardControls from './DashboardControls'
 export default async function DashboardPage(props: {
     searchParams?: Promise<{
         query?: string;
+        message?: string;
     }>;
 }) {
     const searchParams = await props.searchParams;
     const query = searchParams?.query || '';
+    const message = searchParams?.message || '';
+
     const supabase = await createClient()
 
     // Fetch User to check tutorial status
     const { data: { user } } = await supabase.auth.getUser()
-    let showTutorial = false
 
-    if (user) {
-        const { data: profile } = await supabase
-            .from('profiles')
-            .select('has_seen_tutorial')
-            .eq('id', user.id)
-            .single()
-
-        // If profile doesn't exist (yet to be created by trigger) or has_seen_tutorial is false/null
-        if (!profile || !profile.has_seen_tutorial) {
-            showTutorial = true
-        }
-    }
+    // ... (rest of logic)
 
     let queryBuilder = supabase
         .from('meetings')
@@ -54,6 +45,19 @@ export default async function DashboardPage(props: {
                     <DashboardControls userId={user?.id} />
                 </div>
             </header>
+
+            {message && (
+                <div style={{
+                    padding: '1rem',
+                    marginBottom: '1rem',
+                    borderRadius: '0.5rem',
+                    backgroundColor: message.startsWith('Chyba') ? '#fed7d7' : '#c6f6d5',
+                    color: message.startsWith('Chyba') ? '#c53030' : '#2f855a',
+                    border: `1px solid ${message.startsWith('Chyba') ? '#feb2b2' : '#9ae6b4'}`
+                }}>
+                    {decodeURIComponent(message).replace(/_/g, ' ')}
+                </div>
+            )}
 
             <div style={{ marginBottom: '20px' }}>
                 <SearchInput placeholder="Hledat schůzky..." />
