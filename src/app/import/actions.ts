@@ -74,9 +74,16 @@ export async function importMeetings(formData: FormData) {
 
     } catch (e: any) {
         console.error('Import Critical Error:', e)
-        redirectPath = `/dashboard?message=Kritická_chyba:_${encodeURIComponent(e.message || 'Neznámá')}`
+        return { success: false, message: `Kritická chyba: ${e.message || 'Neznámá chyba'}` }
     }
 
     revalidatePath('/dashboard')
-    redirect(redirectPath)
+
+    if (successCount === 0 && errors.length > 0) {
+        return { success: false, message: `Chyba importu: ${errors[0]}` }
+    } else if (successCount === 0) {
+        return { success: false, message: 'Upozornění: Žádné schůzky nenačteny (zkontrolujte formát)' }
+    }
+
+    return { success: true, message: `Úspěšně nahráno ${successCount} schůzek` }
 }
