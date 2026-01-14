@@ -3,7 +3,7 @@
 import { useActionState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { importMeetings } from './actions'
-import Navbar from '@/components/layout/Navbar'
+
 import styles from './import.module.css'
 
 const initialState = {
@@ -27,7 +27,7 @@ export default function ImportPage() {
 
     return (
         <>
-            <Navbar />
+
             <div className={styles.container}>
                 <div className={styles.card}>
                     <h1 className={styles.title}>Import schůzek</h1>
