@@ -12,7 +12,7 @@ interface OnboardingTutorialProps {
 const STEPS = [
     {
         title: "Vítejte!",
-        description: "Ahoj! Jsem tvoje průvodkyně. Rád bych tě provedla rychlou prohlídkou, abys věděl, co všechno tahle aplikace umí.",
+        description: "Ahoj! Jsem tvoje průvodkyně. Ráda bych tě provedla rychlou prohlídkou, abys věděl, co všechno tahle aplikace umí.",
         icon: "👋"
     },
     {
