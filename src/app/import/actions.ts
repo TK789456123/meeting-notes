@@ -11,6 +11,9 @@ export interface ImportState {
 export async function importMeetings(_prevState: ImportState, formData: FormData): Promise<ImportState> {
     let successCount = 0
     const errors: string[] = []
+    // Debug info to help user
+    let debugLinesRead = 0
+    let firstLineContent = ''
 
     try {
         const file = formData.get('file') as File
@@ -26,19 +29,30 @@ export async function importMeetings(_prevState: ImportState, formData: FormData
         }
 
         const text = await file.text()
-        // Robust splitting for various EOLs
         const lines = text.split(/\r?\n/).filter(line => line.trim() !== '')
+        debugLinesRead = lines.length
 
         for (const line of lines) {
-            const parts = line.trim().split(' ')
-            if (parts.length < 2) continue
+            // Save first line for debug
+            if (!firstLineContent) firstLineContent = line
+
+            // Split by any whitespace (space, tab, etc.) to be robust
+            const parts = line.trim().split(/\s+/)
+
+            if (parts.length < 2) {
+                // Try to see if it's just missing separator but has date format at start?
+                // For now just log usage
+                continue
+            }
 
             const dateStr = parts[0]
+            // Join the rest back together safely
             const title = parts.slice(1).join(' ')
+
             const date = new Date(dateStr)
 
             if (isNaN(date.getTime())) {
-                errors.push(`Neplatné datum: ${dateStr}`)
+                errors.push(`Řádek "${line.substring(0, 20)}...": Neplatné datum (${dateStr})`)
                 continue
             }
             date.setHours(9, 0, 0, 0)
@@ -55,7 +69,7 @@ export async function importMeetings(_prevState: ImportState, formData: FormData
 
             if (meetingError) {
                 console.error('Import Error:', meetingError)
-                errors.push(`Chyba databáze: ${meetingError.message}`)
+                errors.push(`DB Chyba: ${meetingError.message}`)
                 continue
             }
 
@@ -70,12 +84,23 @@ export async function importMeetings(_prevState: ImportState, formData: FormData
 
         revalidatePath('/dashboard')
 
-        if (successCount === 0 && errors.length > 0) {
-            return { success: false, message: `Chyba importu: ${errors[0]}` }
-        } else if (successCount === 0) {
-            return { success: false, message: 'Upozornění: Žádné schůzky nenačteny (zkontrolujte formát)' }
+        if (successCount === 0) {
+            if (errors.length > 0) {
+                return { success: false, message: `Chyba (načteno ${debugLinesRead} řádků): ${errors[0]}` }
+            } else {
+                // Detailed debug message
+                const usageHint = debugLinesRead > 0
+                    ? `První řádek byl: "${firstLineContent}". Očekáváno: "RRRR-MM-DD Název"`
+                    : "Soubor se zdá být prázdný."
+
+                return {
+                    success: false,
+                    message: `Nenačteno. ${usageHint}`
+                }
+            }
         } else {
-            return { success: true, message: `Úspěšně nahráno ${successCount} schůzek` }
+            const errorMsg = errors.length > 0 ? ` (přeskočeno ${errors.length} chyb)` : ''
+            return { success: true, message: `Úspěšně nahráno ${successCount} schůzek${errorMsg}` }
         }
 
     } catch (error: unknown) {
