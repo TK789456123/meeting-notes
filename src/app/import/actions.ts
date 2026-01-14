@@ -1,4 +1,3 @@
-
 'use server'
 
 import { createClient } from '@/utils/supabase/server'
@@ -6,15 +5,17 @@ import { redirect } from 'next/navigation'
 import { revalidatePath } from 'next/cache'
 
 export async function importMeetings(formData: FormData) {
-    const file = formData.get('file') as File
-    const supabase = await createClient()
-    const { data: { user } } = await supabase.auth.getUser()
-
-    if (!user || !file) {
-        return
-    }
+    let shouldRedirect = false
 
     try {
+        const file = formData.get('file') as File
+        const supabase = await createClient()
+        const { data: { user } } = await supabase.auth.getUser()
+
+        if (!user || !file) {
+            return
+        }
+
         const text = await file.text()
         const lines = text.split('\n').filter(line => line.trim() !== '')
 
@@ -60,13 +61,16 @@ export async function importMeetings(formData: FormData) {
                 }
             }
         }
+
+        shouldRedirect = true
+
     } catch (e) {
         console.error('Import Critical Error:', e)
-        // Optionally return error state if this was a useFormState action, but here we redirect on success
-        // For now, we swallow the error to prevent crash? No, we should probably redirect with error.
-        return
+        // Swallow error to prevent crash
     }
 
-    revalidatePath('/dashboard')
-    redirect('/dashboard?message=Import dokončen')
+    if (shouldRedirect) {
+        revalidatePath('/dashboard')
+        redirect('/dashboard?message=Import_dokoncen')
+    }
 }
