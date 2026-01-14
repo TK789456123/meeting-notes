@@ -78,8 +78,9 @@ export async function importMeetings(_prevState: ImportState, formData: FormData
             return { success: true, message: `Úspěšně nahráno ${successCount} schůzek` }
         }
 
-    } catch (e: any) {
-        console.error('Import Critical Error:', e)
-        return { success: false, message: `Kritická chyba: ${e.message || 'Neznámá chyba'}` }
+    } catch (error: unknown) {
+        console.error('Import Critical Error:', error)
+        const errorMessage = error instanceof Error ? error.message : 'Neznámá chyba'
+        return { success: false, message: `Kritická chyba: ${errorMessage}` }
     }
 }
