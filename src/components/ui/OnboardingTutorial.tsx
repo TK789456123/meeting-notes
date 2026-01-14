@@ -31,6 +31,11 @@ const STEPS = [
         icon: "💾"
     },
     {
+        title: "Nastavení a profil",
+        description: "V nastavení si můžeš přepnout na tmavý režim nebo změnit jazyk aplikace. Také si nezapomeň nahrát svou profilovku!",
+        icon: "⚙️"
+    },
+    {
         title: "Jdeme na to?",
         description: "To je pro začátek vše. Kdyby něco, jsem tu! Užij si práci.",
         icon: "🚀"
