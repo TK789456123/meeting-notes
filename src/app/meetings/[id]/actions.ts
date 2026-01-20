@@ -178,9 +178,12 @@ export async function saveAudio(meetingId: string, formData: FormData) {
 export async function generateSummary(meetingId: string, notesContent: string) {
     const supabase = await createClient()
 
+    // Auth context for assignment
+    const { data: { user } } = await supabase.auth.getUser()
+
     // Relaxed AI Logic
     const lines = notesContent.split('\n')
-    let actionItemsToCreate: { meeting_id: string; description: string; is_completed: boolean }[] = []
+    let actionItemsToCreate: { meeting_id: string; description: string; is_completed: boolean; assignee_id: string | null }[] = []
 
     const strictPrefixes = ['todo:', 'úkol:', 'ukol:', '- [ ]', '- []']
 
@@ -198,7 +201,12 @@ export async function generateSummary(meetingId: string, notesContent: string) {
                 }
             }
             if (description) {
-                actionItemsToCreate.push({ meeting_id: meetingId, description, is_completed: false })
+                actionItemsToCreate.push({
+                    meeting_id: meetingId,
+                    description,
+                    is_completed: false,
+                    assignee_id: user ? user.id : null
+                })
             }
         }
     }
@@ -215,7 +223,8 @@ export async function generateSummary(meetingId: string, notesContent: string) {
                 actionItemsToCreate.push({
                     meeting_id: meetingId,
                     description: trimmed.slice(1).trim(),
-                    is_completed: false
+                    is_completed: false,
+                    assignee_id: user ? user.id : null
                 })
                 continue
             }
@@ -225,7 +234,8 @@ export async function generateSummary(meetingId: string, notesContent: string) {
                 actionItemsToCreate.push({
                     meeting_id: meetingId,
                     description: trimmed,
-                    is_completed: false
+                    is_completed: false,
+                    assignee_id: user ? user.id : null
                 })
             }
         }
