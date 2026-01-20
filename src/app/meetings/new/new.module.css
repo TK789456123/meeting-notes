@@ -63,8 +63,9 @@
 
 .inputGroup input::placeholder,
 .inputGroup textarea::placeholder {
-    color: var(--text-secondary);
-    opacity: 0.8;
+    color: #64748b;
+    /* Force darker placeholder */
+    opacity: 0.7;
 }
 
 .inputGroup input:focus,
