@@ -63,13 +63,8 @@
 body {
   margin: 0;
   background-color: var(--bg-color);
-  background-image:
-    radial-gradient(at 0% 0%, hsla(253, 16%, 7%, 1) 0, transparent 50%),
-    radial-gradient(at 50% 0%, hsla(225, 39%, 20%, 0.5) 0, transparent 50%),
-    radial-gradient(at 100% 0%, hsla(339, 49%, 20%, 0.5) 0, transparent 50%);
+  background-color: var(--bg-color);
   background-attachment: fixed;
-  /* Parallax-like feel */
-  background-size: cover;
 
   color: var(--text-primary);
   font-family: var(--font-inter);
@@ -79,11 +74,9 @@ body {
 }
 
 /* Light mode background override */
+/* Light mode background override - kept simple */
 body:not([data-theme='dark']) {
-  background-image:
-    radial-gradient(at 40% 20%, hsla(260, 80%, 94%, 1) 0px, transparent 50%),
-    radial-gradient(at 80% 0%, hsla(220, 80%, 95%, 1) 0px, transparent 50%),
-    radial-gradient(at 0% 50%, hsla(300, 80%, 96%, 1) 0px, transparent 50%);
+  background-color: var(--bg-color);
 }
 
 
