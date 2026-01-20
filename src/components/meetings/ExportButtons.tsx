@@ -1,13 +1,16 @@
 'use client'
 
-
 import { Download, Calendar as CalendarIcon, FileText, Palette } from 'lucide-react'
-
 import jsPDF from 'jspdf'
-
+import autoTable from 'jspdf-autotable'
 import * as ics from 'ics'
 import styles from './export-buttons.module.css'
 import { updateColor } from '@/app/meetings/[id]/actions'
+
+// Extend jsPDF type to include autoTable
+interface jsPDFWithAutoTable extends jsPDF {
+    lastAutoTable?: { finalY: number }
+}
 
 interface ExportButtonsProps {
     meeting: {
@@ -19,9 +22,17 @@ interface ExportButtonsProps {
         category?: string
         color?: string
     }
+    actionItems?: {
+        id: string
+        description: string
+        is_completed: boolean
+        deadline?: string | null
+        assignee_id?: string | null
+        profiles?: { full_name: string | null } | null
+    }[]
 }
 
-export default function ExportButtons({ meeting }: ExportButtonsProps) {
+export default function ExportButtons({ meeting, actionItems = [] }: ExportButtonsProps) {
 
     const handleColorChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
         const newColor = e.target.value
@@ -29,34 +40,61 @@ export default function ExportButtons({ meeting }: ExportButtonsProps) {
     }
 
     const handleDownloadPDF = () => {
+        const doc = new jsPDF() as jsPDFWithAutoTable
 
-        const doc = new jsPDF()
-
-        // Font setup (standard helvetica supports basics, for unicode cs chars we might need custom font but trying standard first)
-        // Note: jsPDF default font doesn't support all UTF-8 chars well. 
-        // For simplicity in this demo we use standard text.
-
+        // Title
         doc.setFontSize(22)
         doc.text(meeting.title, 20, 20)
 
+        // Metadata
         doc.setFontSize(12)
+        doc.setTextColor(100, 100, 100)
         doc.text(`Datum: ${new Date(meeting.date).toLocaleString('cs-CZ')}`, 20, 30)
         doc.text(`Kategorie: ${meeting.category || 'Nezadáno'}`, 20, 38)
+        doc.setTextColor(0, 0, 0)
 
+        let currentY = 50
+
+        // Agenda
         doc.setFontSize(16)
-        doc.text('Agenda', 20, 50)
+        doc.text('Agenda', 20, currentY)
+        currentY += 10
         doc.setFontSize(12)
         const splitAgenda = doc.splitTextToSize(meeting.agenda || 'Žádná agenda.', 170)
-        doc.text(splitAgenda, 20, 60)
+        doc.text(splitAgenda, 20, currentY)
+        currentY += splitAgenda.length * 7 + 10
 
-        const agendaHeight = splitAgenda.length * 7
-        const notesY = 70 + agendaHeight
-
+        // Notes
         doc.setFontSize(16)
-        doc.text('Poznámky', 20, notesY)
+        doc.text('Zápis', 20, currentY)
+        currentY += 10
         doc.setFontSize(12)
         const splitNotes = doc.splitTextToSize(meeting.notes || 'Žádné poznámky.', 170)
-        doc.text(splitNotes, 20, notesY + 10)
+        doc.text(splitNotes, 20, currentY)
+        currentY += splitNotes.length * 7 + 15
+
+        // Action Items (Table)
+        if (actionItems && actionItems.length > 0) {
+            doc.setFontSize(16)
+            doc.text('Úkoly', 20, currentY)
+            currentY += 5 // Spacing for table
+
+            const tableData = actionItems.map(item => [
+                item.is_completed ? 'Hotovo' : 'K vyřízení',
+                item.description,
+                item.profiles?.full_name || 'Neurčeno',
+                item.deadline ? new Date(item.deadline).toLocaleDateString('cs-CZ') : '-'
+            ])
+
+            autoTable(doc, {
+                startY: currentY,
+                head: [['Stav', 'Úkol', 'Odpovědná osoba', 'Termín']],
+                body: tableData,
+                styles: { font: 'helvetica', fontSize: 10 },
+                headStyles: { fillColor: [102, 126, 234] },
+                alternateRowStyles: { fillColor: [245, 247, 250] }
+            })
+        }
 
         doc.save(`${meeting.title.replace(/\s+/g, '_')}_zapis.pdf`)
     }
@@ -64,16 +102,20 @@ export default function ExportButtons({ meeting }: ExportButtonsProps) {
     const handleAddToCalendar = () => {
         const date = new Date(meeting.date)
 
+        // Format action items for calendar description
+        const actionItemsText = actionItems && actionItems.length > 0
+            ? '\n\nÚkoly:\n' + actionItems.map(item => `- ${item.description} (${item.profiles?.full_name || '?'})`).join('\n')
+            : ''
+
         const event: ics.EventAttributes = {
             start: [date.getFullYear(), date.getMonth() + 1, date.getDate(), date.getHours(), date.getMinutes()],
-            duration: { hours: 1, minutes: 0 }, // Default 1 hour
+            duration: { hours: 1, minutes: 0 },
             title: meeting.title,
-            description: `${meeting.agenda}\n\nPoznámky:\n${meeting.notes}`,
+            description: `${meeting.agenda}\n\nPoznámky:\n${meeting.notes}${actionItemsText}`,
             location: 'MeetingNotes App',
             status: 'CONFIRMED',
             busyStatus: 'BUSY',
         }
-
 
         ics.createEvent(event, (error, value) => {
             if (error) {

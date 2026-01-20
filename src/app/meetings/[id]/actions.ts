@@ -174,3 +174,52 @@ export async function saveAudio(meetingId: string, formData: FormData) {
     revalidatePath(`/meetings/${meetingId}`)
     return publicUrl
 }
+
+export async function generateSummary(meetingId: string, notesContent: string) {
+    const supabase = await createClient()
+
+    // 1. Heuristic Analysis (Mock AI)
+    // Find lines starting with "Todo:", "Úkol:", "- [ ]"
+    const lines = notesContent.split('\n')
+    const actionItemsToCreate = []
+
+    for (const line of lines) {
+        const trimmed = line.trim()
+        if (
+            trimmed.toLowerCase().startsWith('todo:') ||
+            trimmed.toLowerCase().startsWith('úkol:') ||
+            trimmed.startsWith('- [ ]') ||
+            trimmed.startsWith('- []')
+        ) {
+            // Clean up the description
+            let description = trimmed
+                .replace(/^todo:/i, '')
+                .replace(/^úkol:/i, '')
+                .replace(/^- \[ \]/, '')
+                .replace(/^- \[\]/, '')
+                .trim()
+
+            if (description.length > 0) {
+                actionItemsToCreate.push({
+                    meeting_id: meetingId,
+                    description: description,
+                    is_completed: false
+                })
+            }
+        }
+    }
+
+    if (actionItemsToCreate.length > 0) {
+        const { error } = await supabase
+            .from('action_items')
+            .insert(actionItemsToCreate)
+
+        if (error) {
+            console.error('Error creating auto action items:', error)
+            throw new Error('Failed to create action items')
+        }
+    }
+
+    revalidatePath(`/meetings/${meetingId}`)
+    return { success: true, count: actionItemsToCreate.length }
+}

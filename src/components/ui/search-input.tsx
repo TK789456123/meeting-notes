@@ -32,11 +32,16 @@ export default function SearchInput({ placeholder }: { placeholder: string }) {
         defaultValue={searchParams.get('query')?.toString()}
         style={{
           width: '100%',
-          padding: '10px 10px 10px 35px',
-          borderRadius: '6px',
-          border: '1px solid #ddd',
+          padding: '10px 10px 10px 40px',
+          borderRadius: '12px',
+          border: '1px solid var(--glass-border)',
+          background: 'rgba(255, 255, 255, 0.1)',
+          backdropFilter: 'blur(10px)',
           fontSize: '14px',
-          outline: 'none'
+          outline: 'none',
+          color: 'var(--text-primary)',
+          transition: 'all 0.2s ease',
+          boxShadow: 'inset 0 2px 4px rgba(0,0,0,0.02)'
         }}
       />
     </div>

@@ -1,60 +1,130 @@
 :root {
-  /* Light Mode Defaults */
-  --background-start: #f5f7fa;
-  --background-end: #c3cfe2;
-  --text-primary: #2d3436;
-  --text-secondary: #636e72;
-  --card-bg: rgba(255, 255, 255, 0.8);
-  --card-border: rgba(255, 255, 255, 0.8);
-  --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  --font-inter: "Inter", sans-serif;
-  --input-bg: #ffffff;
-  --input-border: #e1e1e1;
-  --input-bg: #ffffff;
-  --input-border: #e1e1e1;
-  --input-text: #2d3436;
-  --page-header-color: #2d3436;
-  --page-subtitle-color: #636e72;
+  /* Modern HSL Palette - Indigo / Slate / Violet */
+  --primary-hue: 230;
+  /* Indigo-ish */
+  --secondary-hue: 250;
+  /* Violet-ish */
+
+  /* Backgrounds */
+  --bg-color: #f8fafc;
+  --bg-gradient-start: #f1f5f9;
+  --bg-gradient-end: #e2e8f0;
+
+  /* Text */
+  --text-primary: #0f172a;
+  /* Slate 900 */
+  --text-secondary: #475569;
+  /* Slate 600 */
+  --text-tertiary: #94a3b8;
+  /* Slate 400 */
+
+  /* Glassmorphism Tokens */
+  --glass-bg: rgba(255, 255, 255, 0.7);
+  --glass-border: rgba(255, 255, 255, 0.5);
+  --glass-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.07);
+  --glass-blur: blur(12px);
+
+  /* Accents */
+  --primary: hsl(var(--primary-hue), 85%, 60%);
+  --primary-hover: hsl(var(--primary-hue), 85%, 55%);
+  --secondary: hsl(var(--secondary-hue), 85%, 65%);
+
+  --primary-gradient: linear-gradient(135deg, hsl(230, 80%, 65%) 0%, hsl(260, 80%, 65%) 100%);
+
+  /* UI Elements */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 20px;
+
+  --font-inter: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
 }
 
 [data-theme='dark'] {
-  /* Dark Mode Overrides - High Contrast (Light Card on Dark BG) */
-  --background-start: #2d3436;
-  --background-end: #000000;
-  --text-primary: #2d3436;
-  --text-secondary: #636e72;
-  --card-bg: rgba(255, 255, 255, 0.9);
-  --card-border: rgba(255, 255, 255, 0.2);
-  --primary-gradient: linear-gradient(135deg, #a29bfe 0%, #6c5ce7 100%);
-  --input-bg: #ffffff;
-  --input-border: #b2bec3;
-  --input-text: #2d3436;
-  --page-header-color: #ffffff;
-  --page-subtitle-color: rgba(255, 255, 255, 0.85);
-  color-scheme: light;
-  /* Force light controls inside the light card */
+  /* Dark Mode - Deep Slate / Midnight */
+  --bg-color: #020617;
+  --bg-gradient-start: #0f172a;
+  --bg-gradient-end: #1e1b4b;
+  /* Deep Indigo */
+
+  --text-primary: #f8fafc;
+  --text-secondary: #cbd5e1;
+  --text-tertiary: #64748b;
+
+  --glass-bg: rgba(15, 23, 42, 0.6);
+  --glass-border: rgba(255, 255, 255, 0.08);
+  --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+
+  --primary: hsl(var(--primary-hue), 85%, 70%);
+  --primary-gradient: linear-gradient(135deg, hsl(230, 70%, 65%) 0%, hsl(260, 70%, 65%) 100%);
+
+  color-scheme: dark;
 }
 
 body {
-  color: var(--text-primary);
-  background: linear-gradient(135deg, var(--background-start) 0%, var(--background-end) 100%);
-  min-height: 100vh;
   margin: 0;
+  background-color: var(--bg-color);
+  background-image:
+    radial-gradient(at 0% 0%, hsla(253, 16%, 7%, 1) 0, transparent 50%),
+    radial-gradient(at 50% 0%, hsla(225, 39%, 30%, 1) 0, transparent 50%),
+    radial-gradient(at 100% 0%, hsla(339, 49%, 30%, 1) 0, transparent 50%);
+  background-attachment: fixed;
+  /* Parallax-like feel */
+  background-size: cover;
+
+  color: var(--text-primary);
   font-family: var(--font-inter);
-  transition: color 0.3s ease, background 0.3s ease;
+  -webkit-font-smoothing: antialiased;
+  min-height: 100vh;
+  transition: background-color 0.5s ease, color 0.3s ease;
 }
 
-* {
-  box-sizing: border-box;
+/* Light mode background override */
+body:not([data-theme='dark']) {
+  background-image:
+    radial-gradient(at 40% 20%, hsla(260, 80%, 94%, 1) 0px, transparent 50%),
+    radial-gradient(at 80% 0%, hsla(220, 80%, 95%, 1) 0px, transparent 50%),
+    radial-gradient(at 0% 50%, hsla(300, 80%, 96%, 1) 0px, transparent 50%);
 }
+
 
 a {
   color: inherit;
   text-decoration: none;
 }
 
-/* Google Translate Overrides */
-/* Hide the top bar - Forcefully */
+* {
+  box-sizing: border-box;
+}
+
+/* Scrollbar Styling */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--text-tertiary);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--text-secondary);
+}
+
+/* Utility Class for Glass Cards */
+.glass-card {
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--glass-shadow);
+  border-radius: var(--radius-lg);
+}
+
+/* Google Translate Hiding */
 .goog-te-banner-frame.skiptranslate,
 .goog-te-banner-frame,
 iframe.goog-te-banner-frame {
@@ -70,45 +140,4 @@ iframe.goog-te-banner-frame {
 body {
   top: 0px !important;
   position: static !important;
-}
-
-/* Hide the Google icon in the dropdown trigger if desired for cleaner look */
-.goog-te-gadget-icon {
-  display: none !important;
-}
-
-/* Remove the simple view link */
-.goog-te-gadget-simple {
-  background-color: transparent !important;
-  border: none !important;
-  padding: 0 !important;
-  font-size: 14px !important;
-}
-
-/* Adjust text color in the widget */
-.goog-te-gadget-simple .goog-te-menu-value span {
-  color: var(--text-primary) !important;
-}
-
-/* Force readable colors for Google Translate Dropdown (Fix for Dark Mode) */
-.goog-te-menu-frame,
-.goog-te-menu2 {
-  background-color: #ffffff !important;
-  border: 1px solid #e2e8f0 !important;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1) !important;
-}
-
-.goog-te-menu2-item div,
-.goog-te-menu2-item-selected div {
-  color: #1a202c !important;
-  background-color: #ffffff !important;
-}
-
-.goog-te-menu2-item:hover div {
-  background-color: #ebf8ff !important;
-  color: #2b6cb0 !important;
-}
-
-iframe.goog-te-menu-frame {
-  z-index: 9999 !important;
 }

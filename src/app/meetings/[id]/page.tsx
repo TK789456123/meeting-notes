@@ -8,6 +8,7 @@ import Link from 'next/link'
 import { CheckCircle2, Circle, Calendar, User, Clock, ArrowLeft } from 'lucide-react'
 import { DynamicExportButtons, DynamicShareMeetingButton, DynamicAudioRecorder } from '@/components/meetings/ClientWrappers'
 import AddParticipantForm from '@/components/meetings/AddParticipantForm'
+import AISummaryButton from '@/components/meetings/AISummaryButton'
 import Image from 'next/image'
 
 interface Profile {
@@ -174,7 +175,7 @@ export default async function MeetingPage(props: { params: Promise<{ id: string 
                         </div>
                         <div className={styles.actionsRow}>
                             <DynamicShareMeetingButton meetingId={meeting.id} />
-                            <DynamicExportButtons meeting={meeting} />
+                            <DynamicExportButtons meeting={meeting} actionItems={actionItems} />
                         </div>
                     </div>
                 </header>
@@ -200,6 +201,9 @@ export default async function MeetingPage(props: { params: Promise<{ id: string 
 
                         <section className={styles.section}>
                             <h2 className={styles.sectionTitle}>Zápis</h2>
+                            <div style={{ marginBottom: '1rem' }}>
+                                <AISummaryButton meetingId={meetingId} notesContent={meeting.notes || ''} />
+                            </div>
                             <form action={updateNotes.bind(null, meetingId)} className={styles.notesForm}>
                                 <textarea
                                     name="notes"
