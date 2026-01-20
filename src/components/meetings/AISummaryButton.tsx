@@ -15,7 +15,12 @@ export default function AISummaryButton({ meetingId, notesContent }: { meetingId
 
         setIsGenerating(true)
         try {
-            await generateSummary(meetingId, notesContent)
+            const result = await generateSummary(meetingId, notesContent)
+            if (result.count === 0) {
+                alert('AI nenašlo žádné nové úkoly.\n\nTip: Začněte řádek s "Todo:", "Úkol:" nebo "- [ ]", aby je AI rozpoznalo.')
+            } else {
+                alert(`AI úspěšně vytvořilo ${result.count} úkolů!`)
+            }
         } catch (error) {
             console.error(error)
             alert('Chyba při generování shrnutí.')
