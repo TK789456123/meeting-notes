@@ -178,31 +178,53 @@ export async function saveAudio(meetingId: string, formData: FormData) {
 export async function generateSummary(meetingId: string, notesContent: string) {
     const supabase = await createClient()
 
-    // 1. Heuristic Analysis (Mock AI)
-    // Find lines starting with "Todo:", "Úkol:", "- [ ]"
+    // Relaxed AI Logic
     const lines = notesContent.split('\n')
-    const actionItemsToCreate = []
+    let actionItemsToCreate: { meeting_id: string; description: string; is_completed: boolean }[] = []
 
+    const strictPrefixes = ['todo:', 'úkol:', 'ukol:', '- [ ]', '- []']
+
+    // First pass: Strict
     for (const line of lines) {
         const trimmed = line.trim()
-        if (
-            trimmed.toLowerCase().startsWith('todo:') ||
-            trimmed.toLowerCase().startsWith('úkol:') ||
-            trimmed.startsWith('- [ ]') ||
-            trimmed.startsWith('- []')
-        ) {
-            // Clean up the description
-            let description = trimmed
-                .replace(/^todo:/i, '')
-                .replace(/^úkol:/i, '')
-                .replace(/^- \[ \]/, '')
-                .replace(/^- \[\]/, '')
-                .trim()
+        const lower = trimmed.toLowerCase()
 
-            if (description.length > 0) {
+        if (strictPrefixes.some(p => lower.startsWith(p))) {
+            let description = trimmed
+            for (const p of strictPrefixes) {
+                if (lower.startsWith(p)) {
+                    description = description.slice(p.length).trim()
+                    break
+                }
+            }
+            if (description) {
+                actionItemsToCreate.push({ meeting_id: meetingId, description, is_completed: false })
+            }
+        }
+    }
+
+    // Second pass: Loose (fallback)
+    if (actionItemsToCreate.length === 0) {
+        for (const line of lines) {
+            const trimmed = line.trim()
+            if (!trimmed) continue
+            if (trimmed.startsWith('#')) continue // Headers
+
+            // Dash or star
+            if (trimmed.startsWith('- ') || trimmed.startsWith('* ')) {
                 actionItemsToCreate.push({
                     meeting_id: meetingId,
-                    description: description,
+                    description: trimmed.slice(1).trim(),
+                    is_completed: false
+                })
+                continue
+            }
+
+            // Short sentence
+            if (trimmed.length < 150 && trimmed.length > 5) {
+                actionItemsToCreate.push({
+                    meeting_id: meetingId,
+                    description: trimmed,
                     is_completed: false
                 })
             }
