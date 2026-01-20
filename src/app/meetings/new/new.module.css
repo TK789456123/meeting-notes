@@ -68,6 +68,17 @@
     opacity: 0.7;
 }
 
+/* Match date input mask to placeholder color when empty/invalid */
+.inputGroup input[type="datetime-local"] {
+    color: #64748b;
+}
+
+/* Switch to dark text when focused or filled (valid) */
+.inputGroup input[type="datetime-local"]:focus,
+.inputGroup input[type="datetime-local"]:valid {
+    color: #0f172a;
+}
+
 .inputGroup input:focus,
 .inputGroup textarea:focus {
     outline: none;
