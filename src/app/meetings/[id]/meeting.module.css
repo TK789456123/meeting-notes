@@ -161,9 +161,10 @@
 }
 
 /* Force dark text inside white cards even in dark mode for lists */
+/* Force proper text color in dark mode */
 :global([data-theme='dark']) .peopleList,
 :global([data-theme='dark']) .actionList {
-    color: #2d3436;
+    color: #ffffff;
 }
 
 /* But wait, input-text is determined by theme. */
@@ -226,8 +227,8 @@
 
 /* Force text visibility in dark mode override */
 :global([data-theme='dark']) .actionContent p {
-    color: #2d3436;
-    /* Inside white card = dark text */
+    color: #ffffff;
+    /* Dark mode = white text */
 }
 
 .completedText {
@@ -266,8 +267,8 @@
 
 :global([data-theme='dark']) .addActionForm input,
 :global([data-theme='dark']) .addActionForm select {
-    color: #2d3436;
-    /* Force dark text in inputs */
+    color: #ffffff;
+    /* Force light text in inputs for dark mode */
 }
 
 .addActionForm button {

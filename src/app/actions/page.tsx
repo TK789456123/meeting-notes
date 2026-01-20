@@ -1,7 +1,7 @@
 import { createClient } from '@/utils/supabase/server'
 import Navbar from '@/components/layout/Navbar'
 import Link from 'next/link'
-import { CheckCircle2, Circle, Calendar, ArrowRight } from 'lucide-react'
+import { CheckCircle2, Circle, Calendar, ArrowRight, ArrowLeft } from 'lucide-react'
 import { toggleActionItem } from './actions'
 import styles from './actions.module.css'
 
@@ -41,6 +41,11 @@ export default async function ActionItemsPage() {
         <>
             <Navbar />
             <div className={styles.container}>
+                <Link href="/dashboard" className={styles.backButton} style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem', marginBottom: '2rem', color: 'var(--text-secondary)', textDecoration: 'none' }}>
+                    <ArrowLeft size={20} />
+                    Zpět na přehled
+                </Link>
+
                 <header className={styles.header}>
                     <h1 className={styles.title}>Moje úkoly</h1>
                     <p className={styles.subtitle}>Přehled všech úkolů přiřazených k vaší osobě.</p>
