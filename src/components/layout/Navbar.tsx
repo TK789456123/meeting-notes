@@ -41,7 +41,7 @@ export default async function Navbar() {
                 <NavbarSettings />
                 {user ? (
                     <>
-                        <Link href="/actions" style={{ marginRight: '1rem', fontWeight: 600, color: 'var(--text-primary)' }}>Úkoly</Link>
+                        <Link href="/actions" style={{ marginRight: '1rem', fontWeight: 500, color: '#636e72', textDecoration: 'none' }}>Úkoly</Link>
                         <UserAvatar email={user.email || ''} avatarUrl={avatarUrl} />
                         <span className={styles.email}>{user.email}</span>
                         <form action={signOut}>
