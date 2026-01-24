@@ -5,6 +5,7 @@ import Link from 'next/link'
 import DeleteMeetingButton from '@/components/meetings/DeleteMeetingButton'
 import SearchInput from '@/components/ui/search-input'
 import DashboardControls from './DashboardControls'
+import DashboardGrid from '@/components/dashboard/DashboardGrid'
 
 export default async function DashboardPage(props: {
     searchParams?: Promise<{
@@ -77,45 +78,7 @@ export default async function DashboardPage(props: {
                 <SearchInput placeholder="Hledat schůzky..." />
             </div>
 
-            <div className={styles.grid}>
-                {meetings?.map((meeting) => (
-                    <div key={meeting.id} style={{ position: 'relative' }}>
-                        <DeleteMeetingButton id={meeting.id} />
-                        <Link
-                            href={`/meetings/${meeting.id}`}
-                            className={styles.card}
-                            style={{
-                                borderColor: meeting.color || 'rgba(255,255,255,0.8)',
-                                background: meeting.color ? `${meeting.color}33` : 'rgba(255, 255, 255, 0.6)'
-                            }}
-                        >
-                            <div className={styles.cardHeader}>
-                                <span
-                                    className={styles.date}
-                                    style={{
-                                        background: meeting.color ? `${meeting.color}20` : 'rgba(102, 126, 234, 0.1)',
-                                        color: meeting.color || '#667eea'
-                                    }}
-                                >
-                                    {(() => {
-                                        const d = new Date(meeting.date);
-                                        return isNaN(d.getTime()) ? 'Neplatné datum' : d.toLocaleDateString('cs-CZ');
-                                    })()}
-                                </span>
-                            </div>
-                            <h3 className={styles.cardTitle}>{meeting.title}</h3>
-                            <div className={styles.cardFooter}>
-                                Zobrazit detail →
-                            </div>
-                        </Link>
-                    </div>
-                ))}
-                {(!meetings || meetings.length === 0) && (
-                    <div className={styles.emptyState}>
-                        <p>{query ? `Žádné schůzky nenalezeny pro "${query}".` : 'Zatím nemáte žádné schůzky.'}</p>
-                    </div>
-                )}
-            </div>
+            <DashboardGrid meetings={meetings} query={query} />
         </div >
     )
 }

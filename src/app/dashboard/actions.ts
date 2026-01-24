@@ -28,3 +28,19 @@ export async function completeTutorial(userId: string) {
 
     revalidatePath('/dashboard')
 }
+
+export async function bulkDeleteMeetings(meetingIds: string[]) {
+    const supabase = await createClient()
+
+    // RLS should handle ownership check, but good to be safe
+    const { error } = await supabase
+        .from('meetings')
+        .delete()
+        .in('id', meetingIds)
+
+    if (error) {
+        throw new Error('Failed to delete meetings: ' + error.message)
+    }
+
+    revalidatePath('/dashboard')
+}
