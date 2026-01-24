@@ -22,6 +22,11 @@ const STEPS = [
         icon: "📊"
     },
     {
+        title: "Hromadné akce",
+        description: "Podrž myš nad kartičkou (nebo klikni) a můžeš vybrat více schůzek najednou. Pak je jednoduše smažeš nebo vyexportuješ do PDF.",
+        icon: "✨"
+    },
+    {
         title: "Nová schůzka",
         description: "Tlačítkem '+ Nová schůzka' vytvoříš záznam. Můžeš přidat agendu a pozvat kolegy.",
         icon: "📅"

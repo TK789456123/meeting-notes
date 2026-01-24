@@ -36,7 +36,7 @@ export default async function NewMeetingPage(props: { searchParams: Promise<{ [k
 
                         <div className={styles.inputGroup}>
                             <label htmlFor="date">Datum a čas</label>
-                            <input type="datetime-local" id="date" name="date" required />
+                            <input type="datetime-local" id="date" name="date" required max="9999-12-31T23:59" />
                         </div>
 
                         <div className={styles.inputGroup}>
