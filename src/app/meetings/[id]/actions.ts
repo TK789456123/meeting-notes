@@ -256,28 +256,4 @@ export async function generateSummary(meetingId: string, notesContent: string) {
     return { success: true, count: actionItemsToCreate.length }
 }
 
-export async function transcribeAudio(meetingId: string, formData: FormData) {
-    const file = formData.get('audio') as File
-    if (!file) throw new Error('No audio file provided')
 
-    // @ts-ignore env types compatibility
-    const apiKey = process.env.OPENAI_API_KEY
-    if (!apiKey) throw new Error('OpenAI API Key not configured')
-
-    const OpenAI = (await import('openai')).default
-    const openai = new OpenAI({ apiKey })
-
-    try {
-        // OpenAI expects a File object
-        const response = await openai.audio.transcriptions.create({
-            file: file,
-            model: 'whisper-1',
-            language: 'cs', // Force Czech for better results
-        })
-
-        return { text: response.text }
-    } catch (error: any) {
-        console.error('Transcription error:', error)
-        throw new Error('Transcription failed: ' + (error.message || 'Unknown error'))
-    }
-}
