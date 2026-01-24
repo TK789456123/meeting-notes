@@ -37,6 +37,32 @@ export async function addActionItem(meetingId: string, formData: FormData) {
         redirect(`/meetings/${meetingId}?error=${encodeURIComponent('Nepodařilo se přidat úkol: ' + error.message)}`)
     }
 
+    // Try to send email notification if assigned
+    if (assigneeId) {
+        // Fetch assignee email (we need Admin client or public profile info)
+        // For simplicity/security in this "Free" mode, we'll try to get it if possible, 
+        // or just log the ID.
+        // But wait, 'profiles' table usually has email if we synced it.
+        try {
+            const { data: profile } = await supabase
+                .from('profiles')
+                .select('email')
+                .eq('id', assigneeId)
+                .single()
+
+            if (profile?.email) {
+                const { sendEmailSimulation } = await import('@/utils/notifications')
+                await sendEmailSimulation(
+                    profile.email,
+                    'Nový úkol přiřazen',
+                    `Byl ti přiřazen úkol: "${description}" \nTermín: ${deadline || 'Neurčitý'}`
+                )
+            }
+        } catch (e) {
+            console.error('Failed to send notification:', e)
+        }
+    }
+
     revalidatePath(`/meetings/${meetingId}`)
 }
 
