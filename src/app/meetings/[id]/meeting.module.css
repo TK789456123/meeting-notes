@@ -99,7 +99,7 @@
 }
 
 :global([data-theme='dark']) .sectionTitle {
-    color: #ffffff !important;
+    color: #2d3436 !important;
 }
 
 .contentBox {
