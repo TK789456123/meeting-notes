@@ -23,7 +23,7 @@ const STEPS = [
     },
     {
         title: "Hromadné akce",
-        description: "Podrž myš nad kartičkou (nebo klikni) a můžeš vybrat více schůzek najednou. Pak je jednoduše smažeš nebo vyexportuješ do PDF.",
+        description: "Přejeď myší do levého horního rohu kartičky (nebo klikni) a můžeš vybrat více schůzek najednou. Pak je jednoduše smažeš nebo vyexportuješ do PDF.",
         icon: "✨"
     },
     {
